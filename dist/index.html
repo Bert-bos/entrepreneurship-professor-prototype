@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071A42">
+  <title>Entrepreneurship Professor — Command Center</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="command-center.css">
+  <link rel="stylesheet" href="refinements.css">
+</head>
+<body>
+  <div class="shell wide-shell">
+    <main>
+      <header>
+        <div class="brand"><img src="assets/ep-logo.png" alt="Entrepreneurship Professor"><div class="brand-name"><b>Entrepreneurship</b><strong>Professor</strong><small>by Dr. Bert Seither</small></div></div>
+        <div class="workspace-switcher" aria-label="Workspace"><button>U&nbsp;Tampa</button><button>BOS</button><button class="active">Entrepreneurship Professor</button></div>
+        <div class="header-right"><div class="meeting-clock" id="meetingClock"><button class="countdown-ring" id="countdownRing">30</button><div><small>WHAT'S NEXT</small><b id="nextMeeting">ENT 330 · 4:00 PM</b><span id="meetingTime">30 minutes</span></div><button class="prepare-btn" id="prepareMe">▶ Prepare me</button></div><div class="header-welcome"><b id="greeting">Good afternoon, Bert!</b><span id="headerDate"></span></div><div class="header-actions"><button class="record-btn" id="quickRecord">● Record</button><button class="icon-btn" aria-label="Search">⌕</button><button class="avatar">BS</button></div></div>
+      </header>
+      <div id="globalAlert" class="global-alert"><span>🔥</span><b>Needs immediate attention</b><span id="alertText">A hostile public comment is gaining replies on Instagram. AI response is blocked pending your review.</span><button id="openAlert">Handle now</button></div>
+      <div id="morningBrief" class="morning-brief hidden"></div>
+      <nav id="nav">
+        <button data-page="today" class="active">Today</button>
+        <button data-page="content">Content</button>
+        <button data-page="radar">Story Radar</button>
+        <button data-page="audience">Audience</button>
+        <button data-page="partnerships">Partnerships</button>
+      </nav>
+      <div id="app"></div>
+    </main>
+  </div>
+  <aside id="drawer" class="drawer" aria-hidden="true"><button class="drawer-close" id="drawerClose">×</button><div id="drawerBody"></div></aside>
+  <div id="modal" class="modal hidden"><div class="modal-panel"><button class="drawer-close" id="modalClose">×</button><div id="modalBody"></div></div></div>
+  <div id="toast" role="status"></div>
+  <script src="app.js"></script>
+  <script src="enhancements.js"></script>
+</body>
+</html>
