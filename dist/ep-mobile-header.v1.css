@@ -54,7 +54,19 @@
     grid-row: 2 !important;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    /* NOT width:100% -- the header's own grid tracks (250px fixed + a 1fr
+       track whose automatic minimum is driven by .header-right's content,
+       both defined in the shared command-center.css) sum to ~430px at this
+       breakpoint, wider than the header's own ~356-360px rendered box. That
+       pre-existing overflow already exists independent of this button (it's
+       only invisible because header{overflow-x:clip} crops it) -- fixing
+       the shared grid is out of scope here since UTampa uses the same file.
+       Sizing directly off the viewport, matching the pattern the shared
+       cc-shell-responsive.v1.css already uses for .workspace-switcher
+       itself, sidesteps the oversized grid area entirely. */
+    width: calc(100vw - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+    min-width: 0 !important;
     min-height: 44px;
     background: #eff3f7;
     border: 1px solid var(--line);
