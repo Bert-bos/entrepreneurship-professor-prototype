@@ -1,0 +1,70 @@
+/* ep-brand-library.css — The Editorial Index (Brand Library), per CREATIVE
+   decision package, Bert's approval 2026-09-08. Reuses existing design
+   tokens (--navy, --orange, --blue, --pale, --muted, --line, --shadow, --bg)
+   already established elsewhere on this site. Zero third-party requests:
+   monograms are plain text glyphs, no icon font, no external assets. */
+
+.bl-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 20px; flex-wrap: wrap; }
+.bl-head h1 { font-family: Georgia, serif; color: var(--navy); font-size: 30px; margin: 0 0 8px; letter-spacing: -.02em; }
+.bl-head p { margin: 0; color: var(--muted); max-width: 520px; }
+.bl-status { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.bl-status .pill { background: var(--pale); color: #19779e; }
+.bl-status small { color: var(--muted); font-size: 11px; max-width: 260px; text-align: right; line-height: 1.4; }
+
+.bl-overview { display: flex; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 13px; font-weight: 700; margin-bottom: 22px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.bl-overview .bl-readonly { color: #19779e; }
+
+.bl-featured { display: grid; grid-template-columns: 7fr 5fr; gap: 16px; margin-bottom: 26px; }
+.bl-feature { background: linear-gradient(135deg, #fff, #f3fafd); border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
+.bl-feature-alt { background: linear-gradient(135deg, #fff, #fff7f1); }
+.bl-feature .eyebrow { color: #459fc7; }
+.bl-feature h2 { font-family: Georgia, serif; color: var(--navy); font-size: 20px; margin: 8px 0; line-height: 1.3; }
+.bl-feature p { color: var(--muted); margin: 0 0 12px; }
+.bl-sample-tag { display: inline-block; background: var(--pale); color: var(--navy); font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px; }
+
+.bl-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.bl-card:nth-child(even) { margin-top: 28px; }
+.bl-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px; transition: transform .18s, box-shadow .18s; }
+.bl-card:hover, .bl-card:focus-within { box-shadow: 0 14px 30px rgba(7,26,66,.14); transform: translateY(-2px); }
+.bl-card-flagged { border-left: 4px solid var(--orange); }
+.bl-card-head { display: flex; align-items: center; gap: 12px; }
+.bl-mono { width: 40px; height: 40px; border-radius: 12px; background: var(--pale); color: var(--navy); display: grid; place-items: center; font-size: 18px; font-weight: 900; flex: 0 0 auto; }
+.bl-card-head h3 { margin: 0; color: var(--navy); font-size: 16px; }
+.bl-purpose { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.bl-flag { display: inline-block; background: #fff1e6; color: #b85b17; font-size: 11px; font-weight: 800; padding: 6px 10px; border-radius: 8px; width: fit-content; }
+
+.bl-samples { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.bl-samples li { display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line); padding-top: 8px; }
+.bl-samples li:first-child { border-top: 0; padding-top: 0; }
+.bl-samples b, .bl-sample-row b { color: var(--navy); font-size: 13px; }
+.bl-samples span, .bl-sample-row span { color: var(--muted); font-size: 12px; }
+.bl-samples small, .bl-sample-row small { color: #19779e; font-size: 11px; font-weight: 700; }
+
+.bl-expand { align-self: flex-start; border: 0; background: none; color: #0876bc; font-weight: 800; font-size: 12px; cursor: pointer; padding: 0; min-height: 44px; display: inline-flex; align-items: center; }
+.bl-panel { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.bl-panel[hidden] { display: none; }
+.bl-sample-row { display: flex; flex-direction: column; gap: 2px; }
+
+.bl-source { margin-top: 4px; border: 1px solid var(--line); background: #f7fafc; color: var(--muted); border-radius: 8px; padding: 10px 12px; font-weight: 700; font-size: 12px; cursor: not-allowed; min-height: 44px; text-align: left; }
+
+.bl-reuse { display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; padding: 18px; background: var(--pale); border-radius: 14px; color: var(--navy); font-weight: 800; font-size: 13px; }
+
+.bl-expand:focus-visible, .bl-source:focus-visible, .bl-card:focus-within { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+@media (max-width: 1199px) {
+  .bl-featured { grid-template-columns: 1fr; }
+  .bl-cards { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 767px) {
+  .bl-cards { grid-template-columns: 1fr; }
+  .bl-card:nth-child(even) { margin-top: 0; }
+  .bl-head { flex-direction: column; align-items: flex-start; }
+  .bl-status { align-items: flex-start; text-align: left; }
+  .bl-status small { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-card { transition: none; }
+  .bl-card:hover, .bl-card:focus-within { transform: none; }
+}

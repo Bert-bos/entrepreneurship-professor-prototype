@@ -1,0 +1,85 @@
+/* ep-mobile-header.v1.css — EP-only mobile workspace-switcher collapse.
+   Per CREATIVE decision package "MOBILE HEADER OVERLAP — APPROVED CREATIVE
+   RESOLUTION", Bert's approval 2026-09-08.
+
+   This deliberately does NOT touch cc-shell-responsive.v1.css (that file is
+   shared, unforked, and already independently reviewed for UTampa+EP at
+   641-1250px — left exactly as-is). This file loads AFTER it and only acts
+   below 640px, replacing the always-visible three-pill switcher with a
+   single full-width selector button that opens the same three real buttons
+   (still wired by cc-workspace-switcher.v2.js, unchanged) as a dropdown
+   menu. The byline ("by Dr. Bert Seither") is untouched by this file and
+   never overlaps or truncates at any width, per spec. */
+
+.ws-toggle { display: none; }
+
+@media (max-width: 639px) {
+  /* The real switcher stays in the DOM (still wired for navigation) but
+     becomes the dropdown menu's contents, closed by default. */
+  .workspace-switcher {
+    display: none !important;
+    position: absolute !important;
+    top: 100%;
+    left: 16px;
+    right: 16px;
+    z-index: 20;
+    max-width: none !important;
+    margin: 6px 0 0 0 !important;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 14px 30px rgba(7,26,66,.16);
+    padding: 6px;
+  }
+  .workspace-switcher.ws-menu-open {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+  }
+  .workspace-switcher button {
+    width: 100%;
+    text-align: left;
+    min-height: 44px;
+  }
+
+  .ws-toggle {
+    /* The header is a CSS Grid (.wide-shell header), not a flex container,
+       at this breakpoint -- grid-column/grid-row are what place this
+       correctly; `order`/`flex` below are no-ops here but kept harmless
+       in case a future shell reflow changes the header back to flex. */
+    display: flex !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    background: #eff3f7;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0 14px;
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 14px;
+    order: 99;
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    margin: 8px 0 0 0;
+    position: relative;
+    cursor: pointer;
+  }
+  .ws-toggle .ws-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: left; }
+  .ws-toggle .ws-chevron { margin-left: 8px; transition: transform .15s; flex: 0 0 auto; }
+  .ws-toggle[aria-expanded="true"] .ws-chevron { transform: rotate(180deg); }
+
+  /* Byline must stay visible, never truncate, never overlap. */
+  .wide-shell .brand-name small { white-space: normal; }
+}
+
+.ws-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ws-toggle .ws-chevron { transition: none; }
+}
