@@ -1,0 +1,25 @@
+.prototype-disclosure {
+  align-items: center;
+  background: #fff8ed;
+  border-bottom: 1px solid #f2d1aa;
+  color: #6e3d12;
+  display: flex;
+  font-size: 12px;
+  gap: 10px;
+  line-height: 1.35;
+  padding: 8px 28px;
+}
+
+.prototype-disclosure b {
+  color: #a94b0b;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .prototype-disclosure {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+    padding: 9px 16px;
+  }
+}
