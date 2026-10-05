@@ -100,3 +100,14 @@ The earlier return tests deliberately started from a synthetic test-approved
 assignment; they proved return compatibility, not hosted approval. Future
 workers must not repeat that test helper against real state or assume an
 identically named directory on another machine is Render's shared store.
+
+## Pre-assignment return gap
+
+The existing Worker Result endpoint does not accept a pre-ingest BLOCKED report.
+The canonical EP row/document are known, but no originating GitHub issue ID or
+writable Docs connector is available in this session. A GitHub API read was
+blocked by proxy/transport HTTP 403 before reaching the destination. The API
+host requirement is saved separately from Git transport and does not establish
+API credential scope or Claude wake-up. See [the shared Codex return](CC-CODEX-RETURN.md)
+for the exact checks and the coordinator's two-way receipt requirement. A pushed
+artifact is not proof that CC received it; do not describe this gap as closed.

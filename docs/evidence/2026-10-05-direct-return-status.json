@@ -1,0 +1,43 @@
+{
+  "jobId": "EP-LIVE-SOCIAL-BOS-20261005-01",
+  "checkedAt": "2026-10-05T19:03:14.884795+00:00",
+  "sourceRevision": "6d97d9fee096a13e06a0497c555c293ff570a4e5",
+  "returnArtifact": "docs/CC-CODEX-RETURN.md",
+  "gitHubIssueApi": {
+    "readAttempted": true,
+    "destinationHttpStatus": null,
+    "proxyOrTransportStatus": 403,
+    "writeAttempted": false,
+    "credentialScopeVerified": false,
+    "originatingIssueIdentified": false
+  },
+  "bosResultRoute": {
+    "workerKeyPresent": false,
+    "secureBindingSaved": false,
+    "hostAllowanceApplied": false,
+    "actualTaskSupplied": false,
+    "actualAttemptSupplied": false,
+    "submissionAttempted": false
+  },
+  "canonicalRecordTransport": {
+    "googleDocsConnectorAvailable": false,
+    "outboundIdentityConnections": 0
+  },
+  "configuration": {
+    "draftSaved": true,
+    "apiGitHubHostAddedToDraft": true,
+    "requiresPublication": true,
+    "publishedByThisSession": false
+  },
+  "delivery": {
+    "ccNotified": false,
+    "ccAcknowledged": false,
+    "acknowledgementReadBack": false,
+    "loopClosed": false
+  },
+  "limits": [
+    "Git publication is a shared artifact, not a CC receipt.",
+    "This diagnostic is not Worker Result v1 or another job.",
+    "No external message or production mutation occurred."
+  ]
+}

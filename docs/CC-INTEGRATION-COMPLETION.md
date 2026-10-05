@@ -1,5 +1,10 @@
 # Coordinator completion packet
 
+Bert's current request is to remove him from routine return transport. Read the
+[shared Codex return](CC-CODEX-RETURN.md) directly from this review branch and
+activate its existing-job receipt path before asking him to relay another status
+packet. The file's publication does not prove notification or acknowledgement.
+
 Complete the Entrepreneurship Professor integration through the existing BOS dispatcher and its canonical records. Independently review the prepared implementation, apply it through the authorized technical lane, finish the account/analytics read access, and prove a direct Worker Result return. Bert supplies the goal and is not the routine transport between workers.
 
 This packet is a local instruction document. It has not been sent directly to Claude Chrome or another coordinator by this session. Follow the supplied assignment's approval and lease boundaries; it authorizes no production deployment, publishing, or additional spending.
