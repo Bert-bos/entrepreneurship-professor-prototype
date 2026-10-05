@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bos.local/schemas/worker-result-v1.schema.json",
+  "title": "BOS Worker Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "job_id", "attempt_id", "worker_id", "status",
+    "started_at", "finished_at", "exact_changes", "files_changed",
+    "commit_hashes", "tests_run", "test_results", "evidence_refs",
+    "deployment_or_service_ids", "live_verification",
+    "remaining_assumptions", "remaining_problems",
+    "security_privacy_impact", "spend_consumed", "rollback_state",
+    "recommended_next_action", "requires_bert", "requires_bert_reason"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "job_id": { "type": "string", "minLength": 3, "maxLength": 128 },
+    "attempt_id": { "type": "string", "minLength": 3, "maxLength": 128 },
+    "worker_id": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "status": { "enum": ["COMPLETED", "PARTIAL", "BLOCKED", "FAILED", "CANCELLED"] },
+    "started_at": { "type": "string", "format": "date-time" },
+    "finished_at": { "type": "string", "format": "date-time" },
+    "exact_changes": { "type": "array", "items": { "type": "string" } },
+    "files_changed": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "commit_hashes": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "tests_run": { "type": "array", "items": { "type": "string" } },
+    "test_results": { "type": "array", "items": { "type": "string" } },
+    "evidence_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "deployment_or_service_ids": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "live_verification": { "type": ["string", "null"], "maxLength": 8000 },
+    "remaining_assumptions": { "type": "array", "items": { "type": "string" } },
+    "remaining_problems": { "type": "array", "items": { "type": "string" } },
+    "security_privacy_impact": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "spend_consumed": { "type": "number", "minimum": 0 },
+    "rollback_state": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "recommended_next_action": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "requires_bert": { "type": "boolean" },
+    "requires_bert_reason": { "type": ["string", "null"], "maxLength": 4000 }
+  }
+}

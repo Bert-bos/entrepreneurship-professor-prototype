@@ -1,0 +1,48 @@
+/* Account inventory uses the approved EP tokens; no external assets. */
+.ep-sa { margin-bottom: 14px; border-top: 3px solid var(--blue); }
+.ep-sa-head { gap: 16px; margin-bottom: 8px; }
+.ep-sa-head h2 { margin-top: 5px; }
+.ep-sa-refresh { flex: 0 0 auto; min-height: 44px; }
+.ep-sa-refresh:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+.ep-sa-refresh:disabled { cursor: wait; opacity: .65; }
+.ep-sa-live-status { margin: 0 0 12px; font-size: 12px; font-weight: 800; color: var(--muted); }
+.ep-sa-summary { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; font-size: 12px; }
+.ep-sa-summary b { color: var(--navy); }
+.ep-sa-summary time { color: var(--muted); }
+.ep-sa-accounts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; list-style: none; padding: 0; margin: 0; }
+.ep-sa-account { min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: #fbfdff; overflow-wrap: anywhere; }
+.ep-sa-account-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 7px; }
+.ep-sa-platform { color: #0876bc; font-size: 11px; font-weight: 900; }
+.ep-sa-status { display: inline-block; border-radius: 99px; background: #edf2f6; padding: 4px 7px; font-size: 10px; font-weight: 800; color: var(--muted); }
+.ep-sa-status--ok { color: #1b7a55; }
+.ep-sa-status.ep-sa-status--ok { background: #e8f7f0; }
+.ep-sa-status--review { color: #a24a10; }
+.ep-sa-status.ep-sa-status--review { background: #fff1e6; }
+.ep-sa-status--expired { color: #a62218; }
+.ep-sa-status.ep-sa-status--expired { background: #fff0ee; }
+.ep-sa-account h3 { color: var(--navy); margin: 9px 0 5px; font-size: 14px; }
+.ep-sa-type, .ep-sa-expiration, .ep-sa-account-note { margin: 4px 0; font-size: 11px; line-height: 1.5; color: var(--muted); }
+.ep-sa-account-note { color: #a24a10; }
+.ep-sa-missing { margin: 12px 0 0; font-size: 12px; color: #a24a10; }
+.ep-sa-scope { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.5; color: var(--navy); }
+.ep-sa-freshness { margin: 4px 0 0; font-size: 11px; color: var(--muted); }
+.ep-sa-message { font-size: 13px; line-height: 1.5; color: var(--muted); margin: 12px 0; }
+.ep-sa-error { color: #a62218; }
+.ep-sa-preview-notice { border-left: 3px solid var(--blue); background: var(--pale); color: var(--navy); border-radius: 5px; padding: 10px 12px; margin: 0 0 14px; font-size: 12px; line-height: 1.5; }
+.ep-sa-preview-label { display: inline-block; border: 1px solid var(--line); color: var(--muted); background: #f8fafc; font-size: 10px; font-weight: 800; padding: 4px 7px; border-radius: 99px; white-space: nowrap; }
+.ep-stats-period { margin: 10px 0 4px; color: var(--navy); font-size: 12px; line-height: 1.5; }
+.ep-stats-platforms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); list-style: none; gap: 10px; margin: 12px 0 0; padding: 0; }
+.ep-stats-platform { border: 1px solid var(--line); background: #fbfdff; border-radius: 8px; padding: 12px; min-width: 0; overflow-wrap: anywhere; }
+.ep-stats-platform h3 { margin: 0; font-size: 13px; color: var(--navy); }
+.ep-stats-totals { margin-top: 12px; }
+.ep-stats-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 12px 0 0; }
+.ep-stats-metric dt { color: var(--muted); font-size: 10px; }
+.ep-stats-metric dd { margin: 4px 0 0; color: var(--navy); font-weight: 850; font-size: 17px; }
+.ep-stats-exclusions { margin: 12px 0 0; padding-left: 18px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+@media (max-width: 760px) {
+  .ep-sa-accounts, .ep-stats-platforms { grid-template-columns: 1fr; }
+  .ep-stats-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ep-sa-head { align-items: flex-start; }
+  #app .card-head:has(.ep-sa-preview-label) { flex-wrap: wrap; gap: 10px; }
+  .ep-sa-refresh { font-size: 11px; padding: 8px 10px; }
+}
