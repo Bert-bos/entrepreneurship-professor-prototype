@@ -1,0 +1,178 @@
+{
+  "jobId": "EP-LIVE-SOCIAL-BOS-20261005-01",
+  "candidateRevision": "72da093e9b9e045190d18ffa8876d44b1d8185f3",
+  "exactCommitPublication": {
+    "revision": "72da093e9b9e045190d18ffa8876d44b1d8185f3",
+    "tree": "37b44dc33697b129ea42d7c50faaf8be3a68fbb6",
+    "files": 18,
+    "branch": "codex/ep-approval-activation-20261005",
+    "exactLocalCommitPublished": true,
+    "verifiedByReadback": true,
+    "publication": "GitHub Git Data API with existing credential"
+  },
+  "pr": {
+    "number": 69,
+    "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/pull/69",
+    "revision": "72da093e9b9e045190d18ffa8876d44b1d8185f3",
+    "draft": true,
+    "verifiedByReadback": true
+  },
+  "directReviewRequest": {
+    "commentId": 6002389028,
+    "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6002389028",
+    "bodySha256": "381cdcd4eaddee57a020cfc835c73f5d26638f669ed14d5beb5eaf112fb75c75",
+    "verifiedByReadback": true
+  },
+  "copiedProductionDiffSha256": "6989d5c7128bf72f225bf78ab0e27eebcf9ae1fda13592af16abb898b241d57b",
+  "copiedDiffIndependentlyMatched": true,
+  "firstAttempts": {
+    "prCi": {
+      "runId": 37370269347,
+      "conclusion": "failure",
+      "jobsCancelled": 2,
+      "jobStepsExecuted": 0,
+      "remoteTestsRun": false
+    },
+    "claudeReview": {
+      "runId": 37370318210,
+      "conclusion": "failure",
+      "jobsCancelled": 1,
+      "jobStepsExecuted": 0,
+      "reviewReceived": false
+    }
+  },
+  "verifiedGitHubAnnotation": "The job was not acquired by Runner of type hosted even after multiple attempts",
+  "billingCauseEstablished": false,
+  "oneBoundedRetry": [
+    {
+      "runId": 37370269347,
+      "oneBoundedRetryRequested": true,
+      "httpStatus": 201
+    },
+    {
+      "runId": 37370318210,
+      "oneBoundedRetryRequested": true,
+      "httpStatus": 201
+    }
+  ],
+  "retryObserved": {
+    "attempt": 2,
+    "state": "queued",
+    "observedAtUtc": "2026-10-05T20:50:32Z"
+  },
+  "sourceFetchByClaude": "not performed",
+  "testsRunByClaude": "not performed",
+  "overallIntegrationClosed": false,
+  "productionActivated": false,
+  "credentialsExposed": false,
+  "retryFinal": {
+    "prCi": {
+      "observedAtUtc": "2026-10-05T21:04:31.137129+00:00",
+      "workflow": {
+        "id": 37370269347,
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 2,
+        "head_sha": "72da093e9b9e045190d18ffa8876d44b1d8185f3",
+        "html_url": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37370269347"
+      },
+      "jobs": [
+        {
+          "id": 111971432086,
+          "name": "Test suite",
+          "status": "completed",
+          "conclusion": "success",
+          "stepCount": 10,
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm ci --omit=dev",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm test",
+              "conclusion": "success"
+            },
+            {
+              "name": "Remote producer approval boundary",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm audit --omit=dev --audit-level=high",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 111971432468,
+          "name": "Authentication and queue boundary",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "stepCount": 0,
+          "steps": []
+        }
+      ],
+      "failureAnnotations": [
+        {
+          "job": "Authentication and queue boundary",
+          "message": "The job was not acquired by Runner of type hosted even after multiple attempts"
+        }
+      ]
+    },
+    "claudeReview": {
+      "observedAtUtc": "2026-10-05T21:04:32.924357+00:00",
+      "workflow": {
+        "id": 37370318210,
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 2,
+        "head_sha": "8ae0d4bf0475006a7892280a1fcf87d4d5911f2c",
+        "html_url": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37370318210"
+      },
+      "jobs": [
+        {
+          "id": 111971434398,
+          "name": "claude",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "stepCount": 0,
+          "steps": []
+        }
+      ],
+      "failureAnnotations": [
+        {
+          "job": "claude",
+          "message": "The job was not acquired by Runner of type hosted even after multiple attempts"
+        }
+      ]
+    }
+  },
+  "remoteCiMainTestSuitePassed": true,
+  "completeRemoteCiPassed": false,
+  "independentClaudeCodeReviewReceived": false,
+  "retryObservationCorrection": "Overall queued state was insufficient to infer no job execution. Main CI test suite executed and passed on attempt 2; separate authentication and Claude jobs never acquired runners.",
+  "furtherRetriesRequested": false
+}

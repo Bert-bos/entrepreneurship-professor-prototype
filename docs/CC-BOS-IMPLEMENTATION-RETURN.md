@@ -65,9 +65,28 @@ No publishing or email action occurred.
 
 [The exact-revision Claude review request](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6002389028)
 was posted and read back. It contains the complete seven-file production diff
-and its hash. Claude review and PR CI were queued when this packet was prepared;
-a posted request is not a completed review. The copied-diff review explicitly
+and its hash. Both first workflow attempts failed before any job step ran:
+GitHub's exact annotation was “The job was not acquired by Runner of type
+hosted even after multiple attempts.” No remote tests or Claude verdict were
+produced. One bounded retry ran on the same existing workflows. Its main
+**Test suite job passed**, including `npm test`, the remote-producer Python
+checks and dependency audit. The separate Authentication and queue boundary
+job and Claude review job were cancelled before any step ran, with the same
+hosted-runner acquisition annotation. Both overall runs concluded failure;
+no new Claude verdict was received. Job-level readback corrected an earlier
+overbroad queued/no-execution report. This was one retry, not a passing full CI
+workflow. No billing cause was established. The copied-diff review explicitly
 does not request a repository fetch or independently executed tests.
+
+Final observation at 2026-10-05 21:04 UTC:
+[CI run 37370269347](https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37370269347),
+attempt 2, exact candidate revision; main job `111971432086` success,
+authentication job `111971432468` cancelled with no steps.
+[Claude run 37370318210](https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37370318210),
+attempt 2, default-branch workflow, copied review pinned to the candidate;
+job `111971434398` cancelled with no steps. The delivery evidence records
+individual job outcomes. No further retry, alternate runner or spending
+configuration was initiated.
 
 [The hosting/domain return](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6002126815)
 was posted and read back too. The existing authenticated hosting/GHL/DNS lane
