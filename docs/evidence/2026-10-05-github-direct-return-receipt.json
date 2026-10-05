@@ -1,6 +1,6 @@
 {
   "jobId": "EP-LIVE-SOCIAL-BOS-20261005-01",
-  "observedAt": "2026-10-05T19:28:42.116047+00:00",
+  "observedAt": "2026-10-05T19:51:15.805143+00:00",
   "canonicalJobLogRow": 58,
   "accessJobClosed": true,
   "issue": {
@@ -20,13 +20,16 @@
     "senderLogin": "Bert-bos",
     "senderType": "User",
     "commentReadbackVerified": true,
-    "workerAcknowledged": false
+    "workerAcknowledgedAtSend": false
   },
   "workerRun": {
-    "id": 37363268494,
-    "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37363268494",
-    "status": "in_progress",
-    "ackReadBack": false
+    "id": 37364988963,
+    "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37364988963",
+    "status": "completed",
+    "conclusion": "success",
+    "ackReadBack": true,
+    "sourceRepositoryVerificationPerformed": false,
+    "sourceTestsRunInReceiptTurn": false
   },
   "browserClaudeAck": {
     "reportedRevision": "5d656ef965753eacfe930528f6b5cdfae9b05220",
@@ -46,5 +49,50 @@
     "hostedWorkerResultSubmitted": false,
     "productionChangesMade": false,
     "githubWorkerIsBrowserSession": false
-  }
+  },
+  "initialWorkerRun": {
+    "id": 37363268494,
+    "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37363268494",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "exactAckReceived": false,
+    "cancellationReason": "Separate receipt from expanded source review; no final ACK after approximately 13 minutes"
+  },
+  "receiptOnlyReturn": {
+    "commentId": 6001712633,
+    "commentUrl": "https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001712633",
+    "createdAt": "2026-10-05T19:41:03Z",
+    "readbackVerified": true,
+    "reason": "receipt-only correction; review separate"
+  },
+  "initialObservedAt": "2026-10-05T19:28:42.116047+00:00",
+  "verifiedReceipt": {
+    "ackId": 6001790546,
+    "ackUrl": "https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001790546",
+    "ackAuthor": "claude[bot]",
+    "ackAuthorType": "Bot",
+    "returnRevision": "5d656ef965753eacfe930528f6b5cdfae9b05220",
+    "ackReadBackVerified": true,
+    "sourceRepositoryVerificationPerformed": false,
+    "sourceTestsRunInReceiptTurn": false,
+    "workerRunId": 37364988963,
+    "workerRunUrl": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37364988963",
+    "workerRunStatus": "completed",
+    "workerRunConclusion": "success",
+    "confirmationId": 6001832169,
+    "confirmationUrl": "https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001832169",
+    "confirmationReadBackVerified": true,
+    "gitHubCommunicationRoundtripVerified": true,
+    "browserCanonicalDocReadBackVerified": false
+  },
+  "workerAck": {
+    "id": 6001790546,
+    "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001790546",
+    "author": "claude[bot]",
+    "authorType": "Bot",
+    "body": "**Claude finished @Bert-bos's task in 17s** \u2014\u2014 [View job](https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37364988963)\n\n---\n### Receipt only\n\n**EP-DIRECT-ACK-5d656ef \u2014 GitHub Claude worker acknowledges receipt of the issue-body copy of Codex's return pinned at 5d656ef965753eacfe930528f6b5cdfae9b05220. Repository revision verification and tests were not run in this receipt-only turn.**\n\nThis is the GitHub worker receipt, distinct from browser Claude's reported ACK relayed by Bert. No tool calls or repository inspection were performed in this turn, per instruction. No source-review verdict is given here. No code changes, execution approval, credentials, deployment, publishing, or spending were requested or taken.\n\nFuture routine coordination and review receipts will stay on this thread."
+  },
+  "humanRelayUsedForGitHubAck": false,
+  "gitHubCommunicationRoundtripVerified": true,
+  "implementationComplete": false
 }

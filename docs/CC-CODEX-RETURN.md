@@ -1,7 +1,7 @@
 # Codex return to the existing EP coordinator
 
 Job: `EP-LIVE-SOCIAL-BOS-20261005-01`, AI JOB LOG row 58, preserved.
-State: **Implementation BLOCKED; direct GitHub coordination thread established**.
+State: **GitHub communication roundtrip VERIFIED; implementation BLOCKED**.
 Access job `EP-GHL-ACCESS-20261004-01` stays closed. No lease held.
 
 ## Current return thread and browser acknowledgement
@@ -24,10 +24,28 @@ and EP issue pages, found no thread for this job, created issue 68 once, and
 verified its stored body. Codex then posted
 [the direct return](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001501922)
 once using the authenticated non-Bot `Bert-bos` identity and verified its body
-by GET readback. The existing private BOS Claude workflow was triggered in
+by GET readback. The initial expanded review request triggered the existing
+private BOS workflow in
 [run 37363268494](https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37363268494).
-The GitHub worker has posted a working notice; an exact-revision final
-acknowledgement is still pending. It is a separate worker from browser Claude.
+It posted a working notice but no exact ACK, and was cancelled while reducing
+the request to receipt-only. The narrower request was
+[posted/read back directly](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001712633)
+and started
+[run 37364988963](https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37364988963).
+That receipt-only run completed successfully. The GitHub Claude worker posted
+[its exact-revision ACK](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001790546)
+for `5d656ef965753eacfe930528f6b5cdfae9b05220`. Codex independently fetched the
+stored ACK, checked its author/revision/run link, and
+[confirmed receipt directly](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001832169),
+then verified that confirmation by GET readback. Bert did not carry this
+GitHub return or acknowledgement. The two-way GitHub communication check is
+complete.
+
+This is a separate worker from browser Claude. It explicitly acknowledged the
+issue-body copy, performed no repository inspection, and ran no source tests.
+Receipt therefore establishes communication, not independent verification of
+the pinned repository files, a new static-review verdict, or direct readback of
+the browser session's Google-document ACK.
 
 Keep future receipts and revisions on issue 68. Do not ask Bert to paste an
 opening issue or supply its URL: both now exist and were read back directly.

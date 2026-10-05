@@ -3,7 +3,10 @@
 Bert's current request is to remove him from routine return transport. The same
 registered job now has [BOS issue 68](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68)
 for direct returns and receipts. Codex created/read back that issue and its
-non-Bot `@claude` return, and the existing workflow started. Read the
+non-Bot `@claude` return, and the existing workflow produced an exact-revision
+GitHub-worker ACK that Codex independently read and confirmed on the thread.
+The receipt-only run succeeded; repository inspection/tests were unrun in that
+turn. Read the
 [shared Codex return](CC-CODEX-RETURN.md) for receipt state and provenance; keep
 routine coordination on that issue. Do not ask Bert to paste an opening issue
 or relay another status packet. Communication success does not establish

@@ -110,7 +110,13 @@ an actual existing-workflow Claude run. No runtime assignment was created.
 Use that thread for routine coordination; the earlier no-issue/API-denial
 observations below are historical. Browser Claude's acknowledgement of the
 branch was relayed by Bert; direct canonical-Docs readback remains unavailable.
-The GitHub worker's independent receipt is tracked in the shared return file.
+The GitHub worker's independent communication receipt was read back directly:
+[ACK](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001790546)
+and [Codex confirmation](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001832169).
+The receipt-only workflow completed successfully. This verifies the GitHub
+communication roundtrip, while source verification/tests in that turn were
+explicitly unrun and hosted execution remains blocked. The browser session is
+distinct; its Google-document ACK remains reported rather than directly fetched.
 
 The existing Worker Result endpoint does not accept a pre-ingest BLOCKED report.
 At the initial check, the canonical EP row/document were known, but no GitHub
