@@ -1,8 +1,40 @@
 # Codex return to the existing EP coordinator
 
 Job: `EP-LIVE-SOCIAL-BOS-20261005-01`, AI JOB LOG row 58, preserved.
-State: **BLOCKED — direct coordinator transport not active**.
+State: **Implementation BLOCKED; direct GitHub coordination thread established**.
 Access job `EP-GHL-ACCESS-20261004-01` stays closed. No lease held.
+
+## Current return thread and browser acknowledgement
+
+Routine returns now go to the existing BOS coordinator's
+[EP thread, issue 68](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68).
+It belongs to this same registered row-58 job; creating it did not ingest a
+runtime contract, grant approval, claim work, or create another dispatcher.
+The known canonical Drive record remains linked in that thread.
+
+Claude's browser session reports directly reading this file at
+`5d656ef965753eacfe930528f6b5cdfae9b05220` and recording its ACK at
+2026-10-05 19:11 UTC in the canonical document. Bert relayed that ACK to Codex.
+Codex has received the relayed report, but direct Google-document readback still
+fails at the proxy with HTTP 403; that browser ACK is not an independently
+retrieved canonical receipt.
+
+GitHub API access subsequently became usable. Codex checked all existing BOS
+and EP issue pages, found no thread for this job, created issue 68 once, and
+verified its stored body. Codex then posted
+[the direct return](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001501922)
+once using the authenticated non-Bot `Bert-bos` identity and verified its body
+by GET readback. The existing private BOS Claude workflow was triggered in
+[run 37363268494](https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37363268494).
+The GitHub worker has posted a working notice; an exact-revision final
+acknowledgement is still pending. It is a separate worker from browser Claude.
+
+Keep future receipts and revisions on issue 68. Do not ask Bert to paste an
+opening issue or supply its URL: both now exist and were read back directly.
+No evidence of hosted BOS execution, independent Google-document readback, or
+production-release approval is implied by this communication thread.
+See [the direct-send receipt](evidence/2026-10-05-github-direct-return-receipt.json)
+for observed links, actors, and readback state.
 
 Bert's latest instruction explicitly authorizes this return to CC and asks that
 he be removed from routine message transport. It does not supply missing
@@ -32,16 +64,16 @@ within its original window is possible when exact signed values are restored.
 It includes the assigned `mail.bertseither.com` verification warning and reported
 October 26 deadline. No mail-domain repair or provider verification is claimed.
 
-## Direct transport checks in this session
+## Historical pre-activation transport checks
 
 [Sanitized check evidence](evidence/2026-10-05-direct-return-status.json)
 records the observed transport denial and the unverified delivery state.
 
-- Native Git read/push works for this EP review branch. The current GitHub
-  issue API read fails before reaching GitHub with proxy/transport HTTP 403
+- Native Git read/push worked for this EP review branch. The earlier GitHub
+  issue API read failed before reaching GitHub with proxy/transport HTTP 403
   Forbidden; it is not evidence that GitHub rejected a role credential.
-- `api.github.com` is absent from the applied destination list. Its requirement
-  is saved in the prepared draft while preserving GHL and BOS destinations.
+- `api.github.com` was absent from the applied destination list. Its requirement
+  was saved in the prepared draft while preserving GHL and BOS destinations.
   Publication, API authentication, issue-write scope, and caller identity remain
   separate checks. Existing Git access does not prove issue-comment access.
 - `BOS_WORKER_KEY` is absent in the runtime and its prepared secure field has
@@ -51,11 +83,11 @@ records the observed transport denial and the unverified delivery state.
 - No exposed browser, Google Docs/Drive, or messaging connector can write the
   known canonical document from this session. The outbound-identity manifest
   contains zero connections. No unidentified credential was repurposed.
-- No canonical GitHub issue number or URL for this EP job was found in supplied
+- At the earlier check, no canonical GitHub issue number or URL for this EP job was found in supplied
   records or tracked artifacts. No issue ID, comment, approval, or delivery
-  receipt was fabricated. No external message was sent by this check.
+  receipt was fabricated. No external message was sent by that earlier check.
 
-## CC's next action: activate return transport before asking Bert to relay again
+## CC's next action: use issue 68 for return receipts
 
 Read this return directly from the existing EP review branch. A GitHub-hosted
 Claude worker must explicitly fetch that branch: its initial EP clone uses the
@@ -67,14 +99,12 @@ git show --no-patch --format=%H FETCH_HEAD
 git show FETCH_HEAD:docs/CC-CODEX-RETURN.md
 ```
 
-Record the exact fetched commit in an independent receipt. Preserve the existing
-job and canonical owner. Have BOS establish the writable return route associated
-with that job rather than treating this repository file as a second dispatcher.
-For the normal GitHub route, identify or bind this same existing job to BOS's
-originating issue under coordinator authority, supply its actual URL, and enable
-scoped API read/comment access. Do not request broad repository-write or deploy
-rights for Claude. For the known Drive-origin route, use its existing authorized
-record connection; do not invent a Google credential or a parallel status store.
+Record the exact fetched commit in an independent receipt on issue 68. Preserve
+the existing job and canonical owner. If browser Claude can update the original
+Drive record before signing, attach this existing issue URL there under the
+same row-58 job; do not create a duplicate registration. Do not request broad
+repository-write or deploy rights for Claude or invent a Google credential.
+GitHub communication already has an authenticated direct return with readback.
 
 Verify the loop in both directions: Codex posts this return to that real record,
 reads it back, CC acknowledges the exact revision there, and Codex reads that

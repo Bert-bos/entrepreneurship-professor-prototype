@@ -1,9 +1,13 @@
 # Coordinator completion packet
 
-Bert's current request is to remove him from routine return transport. Read the
-[shared Codex return](CC-CODEX-RETURN.md) directly from this review branch and
-activate its existing-job receipt path before asking him to relay another status
-packet. The file's publication does not prove notification or acknowledgement.
+Bert's current request is to remove him from routine return transport. The same
+registered job now has [BOS issue 68](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68)
+for direct returns and receipts. Codex created/read back that issue and its
+non-Bot `@claude` return, and the existing workflow started. Read the
+[shared Codex return](CC-CODEX-RETURN.md) for receipt state and provenance; keep
+routine coordination on that issue. Do not ask Bert to paste an opening issue
+or relay another status packet. Communication success does not establish
+hosted execution approval, production authority, or integration completion.
 
 Complete the Entrepreneurship Professor integration through the existing BOS dispatcher and its canonical records. Independently review the prepared implementation, apply it through the authorized technical lane, finish the account/analytics read access, and prove a direct Worker Result return. Bert supplies the goal and is not the routine transport between workers.
 

@@ -101,13 +101,23 @@ assignment; they proved return compatibility, not hosted approval. Future
 workers must not repeat that test helper against real state or assume an
 identically named directory on another machine is Render's shared store.
 
-## Pre-assignment return gap
+## Pre-assignment coordination and current return thread
+
+Subsequent live check: GitHub API access became HTTP 200. The sole registered
+EP job now has [BOS issue 68](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68)
+as its coordination thread, with a directly posted/read-back Codex return and
+an actual existing-workflow Claude run. No runtime assignment was created.
+Use that thread for routine coordination; the earlier no-issue/API-denial
+observations below are historical. Browser Claude's acknowledgement of the
+branch was relayed by Bert; direct canonical-Docs readback remains unavailable.
+The GitHub worker's independent receipt is tracked in the shared return file.
 
 The existing Worker Result endpoint does not accept a pre-ingest BLOCKED report.
-The canonical EP row/document are known, but no originating GitHub issue ID or
-writable Docs connector is available in this session. A GitHub API read was
-blocked by proxy/transport HTTP 403 before reaching the destination. The API
-host requirement is saved separately from Git transport and does not establish
-API credential scope or Claude wake-up. See [the shared Codex return](CC-CODEX-RETURN.md)
-for the exact checks and the coordinator's two-way receipt requirement. A pushed
-artifact is not proof that CC received it; do not describe this gap as closed.
+At the initial check, the canonical EP row/document were known, but no GitHub
+issue ID or writable Docs connector was available. The API read was blocked by
+proxy/transport HTTP 403 before reaching the destination. The API host was saved
+separately from Git transport; the later successful API call, verified issue and
+comment writes, and actual workflow run supplied functional transport evidence.
+See [the shared Codex return](CC-CODEX-RETURN.md) for the exact receipt state.
+A pushed file alone never establishes receipt, and working GitHub communication
+does not establish hosted execution or close the integration job.

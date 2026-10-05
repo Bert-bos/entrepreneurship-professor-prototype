@@ -1,0 +1,50 @@
+{
+  "jobId": "EP-LIVE-SOCIAL-BOS-20261005-01",
+  "observedAt": "2026-10-05T19:28:42.116047+00:00",
+  "canonicalJobLogRow": 58,
+  "accessJobClosed": true,
+  "issue": {
+    "issueNumber": 68,
+    "issueUrl": "https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68",
+    "issueId": 5717783429,
+    "created": true,
+    "creationReadbackVerified": true,
+    "jobId": "EP-LIVE-SOCIAL-BOS-20261005-01",
+    "runtimeAssignmentCreated": false
+  },
+  "directReturn": {
+    "issueNumber": 68,
+    "issueUrl": "https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68",
+    "commentId": 6001501922,
+    "commentUrl": "https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6001501922",
+    "senderLogin": "Bert-bos",
+    "senderType": "User",
+    "commentReadbackVerified": true,
+    "workerAcknowledged": false
+  },
+  "workerRun": {
+    "id": 37363268494,
+    "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37363268494",
+    "status": "in_progress",
+    "ackReadBack": false
+  },
+  "browserClaudeAck": {
+    "reportedRevision": "5d656ef965753eacfe930528f6b5cdfae9b05220",
+    "reportedAt": "2026-10-05T19:11:00Z",
+    "provenance": "relayed by Bert in chat",
+    "canonicalDocumentDirectReadBack": false,
+    "googleDocsProxyTransportStatus": 403
+  },
+  "githubApi": {
+    "functionalReadStatus": 200,
+    "functionalWriteReadBack": true,
+    "actorLogin": "Bert-bos",
+    "actorType": "User"
+  },
+  "limits": {
+    "runtimeAssignmentCreated": false,
+    "hostedWorkerResultSubmitted": false,
+    "productionChangesMade": false,
+    "githubWorkerIsBrowserSession": false
+  }
+}
