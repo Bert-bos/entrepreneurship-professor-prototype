@@ -300,10 +300,7 @@ class LocalServerTests(unittest.TestCase):
         self.assertEqual(self.calls, 1)
         result = json.loads(body)
         self.assertEqual(result["source"], "gohighlevel")
-        self.assertEqual(result["capabilities"], {
-            "accountRead": "verified", "analytics": "not_verified",
-            "publishing": "not_verified",
-        })
+        self.assertEqual(result["capabilities"], {"accountRead": "verified"})
         self.assertFalse(result["cache"]["fromCache"])
         self.assertIn("linkedin", result["missingPlatforms"])
         self.assertNotIn("youtube", result["missingPlatforms"])
@@ -371,11 +368,11 @@ class LocalServerTests(unittest.TestCase):
     def test_cached_snapshot_cannot_be_mutated_through_returned_objects(self):
         first = self.store.get_snapshot()
         first["accounts"][0]["name"] = MARKER
-        first["capabilities"]["publishing"] = "verified"
+        first["capabilities"]["accountRead"] = "not_verified"
         first["missingPlatforms"].clear()
         second = self.store.get_snapshot()
         self.assertNotIn(MARKER, json.dumps(second))
-        self.assertEqual(second["capabilities"]["publishing"], "not_verified")
+        self.assertEqual(second["capabilities"], {"accountRead": "verified"})
         self.assertIn("linkedin", second["missingPlatforms"])
         self.assertEqual(self.calls, 1)
 

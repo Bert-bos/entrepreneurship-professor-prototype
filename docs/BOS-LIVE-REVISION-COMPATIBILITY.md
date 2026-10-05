@@ -2,7 +2,7 @@
 
 Verified October 5, 2026 at approximately 1:06 PM EDT (17:06 UTC).
 
-**Result: the Entrepreneurship Professor return client is compatible with both the reported deployed BOS revision and the pinned reference. No BOS runtime deployment or client change is required to reconcile these two revisions. Live return delivery remains unverified.**
+**Result: the Entrepreneurship Professor return client is compatible with both source revisions for an already-approved, assigned job. The nine-commit revision gap needs no runtime change. Activation is blocked by the separate execution-approval path; compatibility tests do not establish that path or live delivery.**
 
 ## Evidence boundary
 
@@ -40,7 +40,7 @@ a2da3ebf9399d07779e93405e35fd73e3f1763e115fed6a0e95012e38dc552a8
 | Status | Authenticated `GET /api/contracts/status` returns a `handoffs` array. Each relevant record includes `task_id`, `contract_job_id`, `attempt_id`, runtime `status`, `claimed_by`, `contract_cost_policy`, and the persisted `worker_result`. |
 | Result return | Authenticated `POST /api/contracts/{task_id}/result` accepts Worker Result v1 JSON. Successful response is `{ "ok": true, "handoff": ... }`. |
 | Identity | `x-bos-key` with the deployment's matching `BOS_WORKER_KEY` maps to immutable identity `bos-worker`; the result handler overwrites a caller-supplied `worker_id` with the authenticated identity. |
-| Existing authority | Result intake requires an existing v1 contract in `WORKING`, the matching logical job ID, the current attempt ID, and the matching claimant. A closed or unassigned job cannot receive a new return through this route. |
+| Existing authority | Producer-role ingestion creates a v1 contract in `ROUTED`. Before a worker can claim it, the existing signed `approveForExecution` gate must verify trusted producer identity, fresh Drive revision/body, and an independently fetched Command Center row explicitly `APPROVED_FOR_EXECUTION`. Only then may claim → `WORKING` → matching job/attempt/claimant result occur. A registered row, ingestion, Google operator session, or worker key alone does not authorize execution. |
 | Cost and evidence | Intake enforces the existing job's cost cap and zero-spend policy; `COMPLETED` and `PARTIAL` results require evidence references. |
 | Independent review | A worker's `COMPLETED` or `PARTIAL` return enters `REVIEW_READY`. It does not approve itself or authorize release. |
 | Readback | Persisted `worker_result` is available in the status record, so the EP client can verify the exact returned JSON and reconcile a previously accepted result without a duplicate POST. |
@@ -70,7 +70,50 @@ BOS_REFERENCE_DIR=/tmp/ep-reference-bos-deployed-769cc84 PYTHONDONTWRITEBYTECODE
   python3 -B -m unittest discover -s tests -p test_bos_handoff.py -v
 ```
 
-At both revisions the integration exercised a local `WORKING` assignment, one HTTP Worker Result POST, subsequent status readback, exact on-disk result persistence, and the transition to `REVIEW_READY`. A repeated client return performed only a GET and reported the matching result already present. No independent review or release action was issued.
+At both revisions the integration exercised a synthetic local `WORKING`
+assignment, one HTTP Worker Result POST, subsequent status readback, exact
+on-disk result persistence, and transition to `REVIEW_READY`. The test fixture
+used a test-only approval helper to establish that starting state. It did not
+exercise real producer signing, Drive/Command Center approval, or hosted intake
+and approval. A repeated return performed only a GET and reported the matching
+result already present. No independent review or release action was issued.
+
+## Activation gate identified in Claude's subsequent review (R6)
+
+The canonical implementation job is now registered as
+`EP-LIVE-SOCIAL-BOS-20261005-01`, AI JOB LOG row 58, according to Claude's
+coordinator return. A hosted contract has not been created. The schema-validated
+envelope is not an ingested or approved runtime task.
+
+The deployed source exposes producer-role `POST /api/contracts/ingest`, then
+worker claim/working/result routes. It exposes no approval HTTP route.
+`approveForExecution` is the exclusive transition from `ROUTED` into
+`APPROVED_FOR_EXECUTION`; it requires an active trusted Ed25519 signing-key ID
+and valid signature, fresh Drive metadata/body matching the routed revision,
+and a fresh Command Center record explicitly approved for execution. The
+HTTP `BOS_PRODUCER_KEY` role is distinct from that signing identity.
+
+The existing CLI has `approve-for-execution <taskId> --key-id=<keyId>`, but it
+mutates its local `ORCHESTRATOR_DATA_DIR` and does not remotely approve a Render
+task. Signing loads from the producer's Mac Keychain. Drive/Sheets intake
+resolves through Keychain or supported GCP metadata impersonation, not an
+operator browser session. These paths have not been established on Render's
+canonical persistent storage.
+
+The normal dashboard entrypoint leaves `commandCenterCredential=null`; that
+parameter controls source snapshots, rather than itself providing the signed
+approval gate. The dashboard starts no source-reconciliation daemon. Approval
+and continued source/row validity need their actual configured credentials and
+canonical-state process; adding an imagined environment variable does not wire
+them up.
+
+Codex additionally reproduced a real-clock CLI signature failure using the
+unmodified source and synthetic Google responses: the CLI signs its own
+timestamp, while the engine reconstructs a later timestamp after source reads.
+The signed bytes differ and approval is rejected. A fixed-clock fixture passes,
+which explains why the earlier test did not expose this activation defect.
+See [the approval activation investigation](BOS-APPROVAL-ACTIVATION.md) for
+reproduction, the bounded repair proposal, and exact operational prerequisites.
 
 The remaining cases verified schema equality, offline validation, absent or stale authority, foreign worker ownership, cost-policy violations, missing evidence, invalid/ambiguous JSON, credential-retargeting rejection, redirect rejection, sanitized errors, and the absence of automatic retries after an uncertain POST.
 
@@ -78,7 +121,7 @@ The remaining cases verified schema equality, offline validation, absent or stal
 
 1. Bind the existing matching `BOS_WORKER_KEY` securely into Codex, restricted to `bos-workforce-orchestrator.onrender.com`; do not generate a replacement or expose it to the browser, source, evidence files, or chat.
 2. Publish the additive BOS hostname allowance and apply it to the running environment. A saved draft alone is not active access.
-3. Obtain a real current BOS assignment through the sole dispatcher, including its task ID, logical job ID, current attempt ID, and `WORKING` ownership as `bos-worker`. The reported empty runtime currently supplies none.
+3. Use the existing registered job, fresh source binding, producer-authorized ingestion, and verified signed approval path on the canonical runtime to reach `APPROVED_FOR_EXECUTION`. Resolve the approval activation blockers above before expecting the worker key to enable execution. Then use actual generated task/current-attempt IDs and claim/working ownership as `bos-worker`; do not register a duplicate job or fabricate identifiers.
 4. Verify the live status route using that worker identity, return the supplied Worker Result once, and verify the exact persisted record. Preserve the live response and attribution before declaring the direct handoff proven.
 
 The completed access job `EP-GHL-ACCESS-20261004-01` remains closed. This check creates no production assignment, reopens no job, starts no competing dispatcher, and performs no live result POST. BOS owns creation and approval of the next real assignment; routine worker evidence should return directly through the existing transport once the prerequisites are available.

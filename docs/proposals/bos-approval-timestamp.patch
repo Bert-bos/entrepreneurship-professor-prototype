@@ -1,0 +1,328 @@
+diff --git a/src/dispatch-cli.js b/src/dispatch-cli.js
+index 8c9cc09..806e127 100755
+--- a/src/dispatch-cli.js
++++ b/src/dispatch-cli.js
+@@ -697,10 +697,12 @@ async function main() {
+     const result = await engine.approveForExecution(taskId, {
+       producerKeyId: flags['key-id'],
+       signatureBase64,
++      signedApprovalTimestamp: approvalTimestamp,
+       driveCredential: driveIntakeCredential,
+       ccCredential: driveIntakeCredential,
+     });
+     console.log(JSON.stringify(result, null, 2));
++    if (!result.ok) process.exitCode = 1;
+     return;
+   }
+
+diff --git a/src/dispatch-engine.js b/src/dispatch-engine.js
+index 02c8bf8..43cfb84 100644
+--- a/src/dispatch-engine.js
++++ b/src/dispatch-engine.js
+@@ -435,7 +435,7 @@ function createEngine({ dataDir, staleAfterMs, clock, approvalMaxAgeMs }) {
+    */
+   function approveForExecution(
+     taskId,
+-    { producerKeyId, signatureBase64, driveCredential, ccCredential, fetchImpl, ccMaxAgeMs, trustedKeysPath, requestedApprovalState } = {}
++    { producerKeyId, signatureBase64, signedApprovalTimestamp, driveCredential, ccCredential, fetchImpl, ccMaxAgeMs, trustedKeysPath, requestedApprovalState } = {}
+   ) {
+     return withLock(dataDir, async () => {
+       const result = store.readHandoffFile(dataDir, taskId);
+@@ -488,8 +488,26 @@ function createEngine({ dataDir, staleAfterMs, clock, approvalMaxAgeMs }) {
+       if (!isCcFetchFresh(ccResult.fetchedAt, now, ccMaxAgeMs || CC_DEFAULT_MAX_AGE_MS)) return reject('command_center_data_stale');
+       if (!isCommandCenterApproved(ccResult.row)) return reject('command_center_execution_state_not_approved_for_execution');
+
++      // Preserve the producer's signed timestamp across the independent
++      // asynchronous reads. Legacy callers may omit it when using the same
++      // clock; all accepted timestamps still bind the signature and receipt.
++      const approvalTimestamp = signedApprovalTimestamp === undefined ? now().toISOString() : signedApprovalTimestamp;
++      function approvalTimestampError() {
++        if (typeof approvalTimestamp !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(approvalTimestamp)) {
++          return 'approval_timestamp_invalid';
++        }
++        const timestampMs = Date.parse(approvalTimestamp);
++        if (!Number.isFinite(timestampMs) || new Date(timestampMs).toISOString() !== approvalTimestamp) return 'approval_timestamp_invalid';
++        const ageMs = now().getTime() - timestampMs;
++        if (!Number.isFinite(ageMs)) return 'approval_timestamp_invalid';
++        if (ageMs < 0) return 'approval_timestamp_in_future';
++        if (!(ageMs < approvalMaxAge)) return 'approval_timestamp_stale';
++        return null;
++      }
++      const timestampError = approvalTimestampError();
++      if (timestampError) return reject(timestampError);
++
+       // Fail closed: identity/signature.
+-      const approvalTimestamp = now().toISOString();
+       let payload;
+       try {
+         payload = canonicalPayload({
+@@ -507,6 +525,8 @@ function createEngine({ dataDir, staleAfterMs, clock, approvalMaxAgeMs }) {
+       }
+       const verdict = verifyProducerSignature({ canonicalPayload: payload, signatureBase64, keyId: producerKeyId, now, trustedKeysPath });
+       if (!verdict.ok) return reject(`producer_signature_${verdict.reason}`);
++      const finalTimestampError = approvalTimestampError();
++      if (finalTimestampError) return reject(finalTimestampError);
+
+       // Every check passed -- grant approval, exactly once, atomically.
+       handoff.approval = {
+diff --git a/test/dispatch-approval-timestamp.test.js b/test/dispatch-approval-timestamp.test.js
+new file mode 100644
+index 0000000..448f04d
+--- /dev/null
++++ b/test/dispatch-approval-timestamp.test.js
+@@ -0,0 +1,168 @@
++'use strict';
++
++// Offline regression/security checks through the real signed approval gate.
++// BOS_SOURCE_DIR/BOS_REFERENCE_DIR may select a read-only source checkout.
++// No approval-state edits, force helper, real key, or network transport is used.
++const test = require('node:test');
++const assert = require('node:assert/strict');
++const crypto = require('crypto');
++const fs = require('fs');
++const os = require('os');
++const path = require('path');
++const source = process.env.BOS_SOURCE_DIR || process.env.BOS_REFERENCE_DIR || path.resolve(__dirname, '..');
++const { createEngine } = require(path.join(source, 'src/dispatch-engine'));
++const { canonicalPayload, computePayloadHash, computeRecordVersion } = require(path.join(source, 'src/dispatch-binding'));
++const { signPayload } = require(path.join(source, 'src/dispatch-producer-auth'));
++const { TOKEN_URL } = require(path.join(source, 'src/dispatch-drive-auth'));
++const { runScenario } = require('./support/approval-cli-offline-probe');
++const epoch = Date.parse('2026-10-05T17:00:00.000Z');
++const maxAgeMs = 30 * 60 * 1000;
++const rsa = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
++const credential = { clientEmail: 'synthetic@invalid.iam.gserviceaccount.com', privateKey: rsa.privateKey.export({ type: 'pkcs1', format: 'pem' }) };
++
++async function fixture(t, { advancePerFetch = 10, jobId = 'EP-TIMESTAMP-SYNTHETIC', approvalMaxAgeMs = maxAgeMs } = {}) {
++  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'ep-timestamp-security-'));
++  t.after(() => fs.rmSync(temporary, { recursive: true, force: true }));
++  const pair = crypto.generateKeyPairSync('ed25519');
++  const privateKeyPem = pair.privateKey.export({ type: 'pkcs8', format: 'pem' });
++  const trustedKeysPath = path.join(temporary, 'synthetic-public-trust.json');
++  fs.writeFileSync(trustedKeysPath, JSON.stringify([{ keyId: 'synthetic-test', publicKeyPem: pair.publicKey.export({ type: 'spki', format: 'pem' }), effectiveFrom: '2020-01-01T00:00:00Z', revokedAt: null }]));
++  let currentMs = epoch;
++  const clock = () => new Date(currentMs);
++  const engine = createEngine({ dataDir: path.join(temporary, 'data'), clock, approvalMaxAgeMs });
++  const revision = new Date(epoch - 60000).toISOString();
++  const envelope = {
++    schema_version: '1.0', job_id: jobId, idempotency_key: `${jobId}:1`,
++    objective: 'Offline signed timestamp test.', owning_project: 'synthetic-test', requested_by: 'local-test',
++    created_at: revision, due_at: null, priority: 'P2', current_verified_state: 'No live assignment.',
++    source_manifest: [{ source_id: 'drive:synthetic-doc', revision, kind: 'google_doc' }],
++    scope: ['Local temporary state.'], explicit_exclusions: ['No live access.'], requirements: ['Use real approval gate.'],
++    constraints: ['No spending.'], data_class: 'INTERNAL', authorized_source_ids: ['drive:synthetic-doc'],
++    execution_lane: 'deterministic', repository: null, acceptance_criteria: ['Signature and freshness checked.'],
++    required_tests: ['Offline timestamp tests.'], required_evidence: ['Assertions.'], rollback: 'Delete temporary directory.',
++    stop_conditions: ['Any real network request.'], protected_actions: ['deploy'],
++    cost_policy: { metered_calls_allowed: false, max_job_usd: 0, max_call_usd: null }, dependencies: [],
++    authorization_binding: { command_center_job_id: jobId, drive_file_id: 'synthetic-doc', drive_revision: revision, drive_doc_url: 'https://docs.google.com/document/d/synthetic-doc/edit' },
++  };
++  const { handoff } = await engine.ingestJobEnvelope(envelope);
++  assert.equal(handoff.status, 'ROUTED');
++  const body = `JOB_ID: ${jobId}\nAUTHORIZED_BY: synthetic-test\nNo live authorization.`;
++  const row = [jobId, 'Synthetic', 'ChatGPT', 'Offline only', 'APPROVED_FOR_EXECUTION'];
++  const headers = ['Job ID', 'Project / Domain', 'Worker', 'Job / Outcome', 'Execution State'];
++  const observed = [];
++  const live = { revision, row: [...row] };
++  const fetchImpl = async (url) => {
++    currentMs += advancePerFetch;
++    observed.push(url);
++    if (url === TOKEN_URL) return { ok: true, status: 200, json: async () => ({ access_token: 'synthetic-offline-token', expires_in: 3600 }) };
++    if (url.startsWith('https://sheets.googleapis.com/')) return { ok: true, status: 200, json: async () => ({ values: [headers, live.row] }) };
++    if (url.includes('/export')) return { ok: true, status: 200, text: async () => body };
++    if (url.startsWith('https://www.googleapis.com/drive/v3/files/')) return { ok: true, status: 200, json: async () => ({ id: 'synthetic-doc', modifiedTime: live.revision, mimeType: 'application/vnd.google-apps.document' }) };
++    throw new Error('Unexpected request rejected by offline test');
++  };
++  function signature(timestamp) {
++    return signPayload({ privateKeyPem, canonicalPayload: canonicalPayload({ jobId, payloadHash: computePayloadHash(body), driveFileId: 'synthetic-doc', driveRevision: revision, ccRecordId: `AI JOB LOG:${jobId}`, ccRecordVersion: computeRecordVersion(row), approvalState: 'APPROVED_FOR_EXECUTION', approvalTimestamp: timestamp }) });
++  }
++  function approve(timestamp, signatureBase64 = signature(timestamp)) {
++    return engine.approveForExecution(handoff.task_id, { producerKeyId: 'synthetic-test', signatureBase64, signedApprovalTimestamp: timestamp, driveCredential: credential, ccCredential: credential, fetchImpl, trustedKeysPath });
++  }
++  return { engine, taskId: handoff.task_id, approve, signature, clock, setTime: (ms) => { currentMs = ms; }, live, observed, fetchImpl, trustedKeysPath };
++}
++
++test('advancing clock: signed timestamp survives fresh independent reads and stays in receipt', async (t) => {
++  const f = await fixture(t, { advancePerFetch: 1000 });
++  const timestamp = f.clock().toISOString();
++  const result = await f.approve(timestamp);
++  assert.equal(result.ok, true);
++  assert.ok(f.clock().getTime() > Date.parse(timestamp));
++  assert.equal(result.handoff.approval.approvalTimestamp, timestamp);
++  assert.ok(f.observed.some((url) => url.includes('sheets.googleapis.com')));
++  assert.ok(f.observed.some((url) => url.includes('/export')));
++});
++
++test('approval lease starts at signed time, not verification time; stale signature cannot reapprove', async (t) => {
++  const f = await fixture(t, { advancePerFetch: 1000 });
++  const timestamp = f.clock().toISOString();
++  assert.equal((await f.approve(timestamp)).ok, true);
++  f.setTime(epoch + maxAgeMs);
++  await assert.rejects(f.engine.claimTask(f.taskId, { machine: 'synthetic', worker: 'synthetic-worker' }), /approval had expired/);
++  assert.equal(f.engine.getHandoff(f.taskId).status, 'ROUTED');
++  const replay = await f.approve(timestamp);
++  assert.equal(replay.ok, false);
++  assert.equal(replay.reason, 'approval_timestamp_stale');
++  assert.equal(f.engine.getHandoff(f.taskId).status, 'ROUTED');
++});
++
++test('fresh signed request that ages out during source reads is rejected', async (t) => {
++  const f = await fixture(t, { advancePerFetch: 1000 });
++  const timestamp = new Date(epoch - maxAgeMs + 1).toISOString();
++  assert.equal((await f.approve(timestamp)).reason, 'approval_timestamp_stale');
++  assert.equal(f.engine.getHandoff(f.taskId).status, 'ROUTED');
++});
++
++test('future signed timestamp is rejected', async (t) => {
++  const f = await fixture(t);
++  assert.equal((await f.approve(new Date(epoch + 60000).toISOString())).reason, 'approval_timestamp_in_future');
++});
++
++test('configured freshness window accepts boundary minus 1 millisecond and rejects the boundary', async (t) => {
++  const valid = await fixture(t, { advancePerFetch: 0, approvalMaxAgeMs: 5000 });
++  assert.equal((await valid.approve(new Date(epoch - 4999).toISOString())).ok, true);
++  const stale = await fixture(t, { advancePerFetch: 0, approvalMaxAgeMs: 5000 });
++  assert.equal((await stale.approve(new Date(epoch - 5000).toISOString())).reason, 'approval_timestamp_stale');
++});
++
++for (const timestamp of [null, 0, NaN, Infinity, '', 'not-a-date', '2026-10-05T17:00:00Z', '2026-02-30T17:00:00.000Z', '2026-10-05T17:00:00.000+00:00']) {
++  test(`malformed/noncanonical timestamp ${JSON.stringify(timestamp)} fails closed`, async (t) => {
++    const f = await fixture(t);
++    assert.equal((await f.approve(timestamp, f.signature(new Date(epoch).toISOString()))).reason, 'approval_timestamp_invalid');
++    assert.equal(f.engine.getHandoff(f.taskId).status, 'ROUTED');
++  });
++}
++
++test('changing a valid timestamp without resigning fails signature verification', async (t) => {
++  const f = await fixture(t);
++  const original = new Date(epoch).toISOString();
++  assert.equal((await f.approve(new Date(epoch - 1).toISOString(), f.signature(original))).reason, 'producer_signature_signature_invalid');
++});
++
++test('same valid approval cannot be replayed while already approved', async (t) => {
++  const f = await fixture(t);
++  const timestamp = f.clock().toISOString();
++  assert.equal((await f.approve(timestamp)).ok, true);
++  await assert.rejects(f.approve(timestamp), /not "ROUTED"/);
++  assert.equal(f.engine.getHandoff(f.taskId).approval.approvalTimestamp, timestamp);
++});
++
++test('fresh timestamp does not bypass changed Drive revision or Command Center binding', async (t) => {
++  const f = await fixture(t);
++  const timestamp = f.clock().toISOString();
++  f.live.revision = '2026-10-05T17:00:01.000Z';
++  assert.equal((await f.approve(timestamp)).reason, 'drive_revision_mismatch_doc_changed_since_routing');
++  f.live.revision = '2026-10-05T16:59:00.000Z';
++  f.live.row[2] = 'Changed worker';
++  assert.equal((await f.approve(timestamp)).reason, 'producer_signature_signature_invalid');
++  f.live.row[4] = 'ROUTED';
++  assert.equal((await f.approve(timestamp)).reason, 'command_center_execution_state_not_approved_for_execution');
++});
++
++test('legacy same-clock caller can still omit signedApprovalTimestamp', async (t) => {
++  const f = await fixture(t, { advancePerFetch: 0 });
++  const result = await f.engine.approveForExecution(f.taskId, { producerKeyId: 'synthetic-test', signatureBase64: f.signature(f.clock().toISOString()), driveCredential: credential, ccCredential: credential, fetchImpl: f.fetchImpl, trustedKeysPath: f.trustedKeysPath });
++  assert.equal(result.ok, true);
++});
++
++test('actual CLI succeeds with advancing wall clock through real signed gate', async () => {
++  const result = await runScenario({ source, frozen: false });
++  assert.equal(result.cliExitCode, 0);
++  assert.equal(result.approvalOk, true);
++  assert.equal(result.persistedStatus, 'APPROVED_FOR_EXECUTION');
++});
++
++test('actual CLI sets nonzero exit code when fresh Command Center recheck rejects', async () => {
++  const result = await runScenario({ source, frozen: false, rejectSecondRow: true });
++  assert.equal(result.cliExitCode, 1);
++  assert.equal(result.approvalOk, false);
++  assert.equal(result.approvalReason, 'command_center_execution_state_not_approved_for_execution');
++  assert.equal(result.persistedStatus, 'ROUTED');
++});
+diff --git a/test/support/approval-cli-offline-probe.js b/test/support/approval-cli-offline-probe.js
+new file mode 100644
+index 0000000..9dca7ef
+--- /dev/null
++++ b/test/support/approval-cli-offline-probe.js
+@@ -0,0 +1,81 @@
++'use strict';
++// Synthetic offline probe of a supplied approval CLI source checkout. No real keys,
++// remote fetches, forceApprove helper, or approval-state edits are used.
++const fs=require('fs'),os=require('os'),path=require('path'),cp=require('child_process');
++async function runScenario({source,frozen=false,rejectSecondRow=false}={}){
++  const {createEngine}=require(path.join(source,'src/dispatch-engine'));
++  const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'ep-signed-approval-probe-'));
++  try{
++    const codeRoot=path.join(temporary,'code'),dataDir=path.join(temporary,'canonical-test-data');
++    fs.mkdirSync(codeRoot);
++    for(const directory of ['src','schemas','config'])fs.cpSync(path.join(source,directory),path.join(codeRoot,directory),{recursive:true});
++    const jobId='EP-APPROVAL-SYNTHETIC-TEST',revision='2026-10-05T17:00:00.000Z';
++    const engine=createEngine({dataDir});
++    const envelope={schema_version:'1.0',job_id:jobId,idempotency_key:'synthetic-approval-probe:1',
++      objective:'Synthetic signed approval CLI probe only.',owning_project:'synthetic-test',requested_by:'local-test',
++      created_at:revision,due_at:null,priority:'P2',current_verified_state:'No live assignment.',
++      source_manifest:[{source_id:'drive:synthetic-approval-doc',revision,kind:'google_doc'}],
++      scope:['Local test only.'],explicit_exclusions:['No live writes or credentials.'],requirements:['Exercise actual signed approval.'],
++      constraints:['No spending.'],data_class:'INTERNAL',authorized_source_ids:['drive:synthetic-approval-doc'],execution_lane:'deterministic',
++      repository:null,acceptance_criteria:['Gate result observed.'],required_tests:['Offline CLI probe.'],required_evidence:['Probe result.'],
++      rollback:'Delete temporary state.',stop_conditions:['Any real network request.'],protected_actions:['deploy'],
++      cost_policy:{metered_calls_allowed:false,max_job_usd:0,max_call_usd:null},
++      authorization_binding:{command_center_job_id:jobId,drive_file_id:'synthetic-approval-doc',drive_revision:revision,
++      drive_doc_url:'https://docs.google.com/document/d/synthetic-approval-doc/edit'},dependencies:[]};
++    const ingested=await engine.ingestJobEnvelope(envelope),taskId=ingested.handoff.task_id;
++    if(engine.getHandoff(taskId).status!=='ROUTED')throw new Error('Fixture did not enter ROUTED through real ingest');
++    const preload=path.join(temporary,'preload.cjs');
++    fs.writeFileSync(preload,String.raw`
++      const fs=require('fs'),path=require('path'),crypto=require('crypto');
++      const codeRoot=process.env.EP_SYNTHETIC_CODE_ROOT;
++      if(process.env.EP_SYNTHETIC_FROZEN_TIME==='true'){
++        const ActualDate=Date,fixed=Date.parse('2026-10-05T17:01:00.000Z');
++        global.Date=class extends ActualDate{constructor(...args){super(...(args.length?args:[fixed]));}static now(){return fixed;}};
++      }
++      const pair=crypto.generateKeyPairSync('ed25519');
++      const publicKeyPem=pair.publicKey.export({type:'spki',format:'pem'});
++      const privateKeyPem=pair.privateKey.export({type:'pkcs8',format:'pem'});
++      fs.writeFileSync(path.join(codeRoot,'config/trusted-producer-keys.json'),JSON.stringify([{keyId:'synthetic-approval-key',publicKeyPem,effectiveFrom:'2020-01-01T00:00:00Z',revokedAt:null}]));
++      const auth=require(path.join(codeRoot,'src/dispatch-drive-auth'));
++      const rsa=crypto.generateKeyPairSync('rsa',{modulusLength:2048});
++      auth.resolveDriveCredential=async()=>({clientEmail:'synthetic@invalid.iam.gserviceaccount.com',privateKey:rsa.privateKey.export({type:'pkcs1',format:'pem'})});
++      const producer=require(path.join(codeRoot,'src/dispatch-producer-auth'));
++      producer.loadProducerPrivateKey=()=>privateKeyPem;
++      let sheetsRequests=0;
++      global.fetch=async(url)=>{
++        await new Promise(resolve=>setTimeout(resolve,8));
++        if(url===auth.TOKEN_URL)return {ok:true,status:200,json:async()=>({access_token:'synthetic-local-only-token',expires_in:3600})};
++        if(url.includes('sheets.googleapis.com')){sheetsRequests++;return {ok:true,status:200,json:async()=>({values:[['Job ID','Project / Domain','Worker','Job / Outcome','Execution State'],['EP-APPROVAL-SYNTHETIC-TEST','Synthetic','ChatGPT','Offline only',(process.env.EP_SYNTHETIC_REJECT_SECOND_ROW==='true'&&sheetsRequests>1)?'ROUTED':'APPROVED_FOR_EXECUTION']]})};}
++        if(url.includes('/export'))return {ok:true,status:200,text:async()=> 'JOB_ID: EP-APPROVAL-SYNTHETIC-TEST\nAUTHORIZED_BY: synthetic-test\nNo live authorization.'};
++        if(url.startsWith('https://www.googleapis.com/drive/v3/files/'))return {ok:true,status:200,json:async()=>({id:'synthetic-approval-doc',modifiedTime:'2026-10-05T17:00:00.000Z',mimeType:'application/vnd.google-apps.document'})};
++        throw new Error('Unexpected URL rejected by offline probe');
++      };
++    `);
++    const invoked=cp.spawnSync(process.execPath,['--require',preload,path.join(codeRoot,'src/dispatch-cli.js'),'approve-for-execution',taskId,'--key-id=synthetic-approval-key'],{
++      env:{NODE_ENV:'production',ORCHESTRATOR_DATA_DIR:dataDir,EP_SYNTHETIC_CODE_ROOT:codeRoot,EP_SYNTHETIC_FROZEN_TIME:String(frozen),EP_SYNTHETIC_REJECT_SECOND_ROW:String(rejectSecondRow)},encoding:'utf8',timeout:10000});
++    if(invoked.signal||invoked.error)throw new Error('Synthetic CLI process failed to complete');
++    let returned;
++    try{returned=JSON.parse(invoked.stdout);}catch{throw new Error('Synthetic CLI produced no result');}
++    return {scenario:rejectSecondRow?'fresh-command-center-rejection':(frozen?'fixed-test-clock':'advancing-real-clock'),cliExitCode:invoked.status,
++      approvalOk:returned.ok,approvalReason:returned.reason,persistedStatus:engine.getHandoff(taskId).status,
++      canonicalTemporaryDataDir:true,realNetworkRequests:0,realCredentialsUsed:0};
++  }finally{fs.rmSync(temporary,{recursive:true,force:true});}
++}
++module.exports={runScenario};
++if(require.main===module){
++  (async()=>{
++    const source=process.env.BOS_SOURCE_DIR||process.env.BOS_REFERENCE_DIR||process.argv[2];
++    if(!source)throw new Error('Supply BOS_SOURCE_DIR or BOS_REFERENCE_DIR');
++    const results=[await runScenario({source}),await runScenario({source,frozen:true}),await runScenario({source,rejectSecondRow:true})];
++    const expected=process.argv.find(value=>value.startsWith('--expect='))?.split('=')[1];
++    let expectationSatisfied=null;
++    if(expected){
++      if(!['baseline','patched'].includes(expected))throw new Error('Invalid expected mode');
++      expectationSatisfied=expected==='baseline'
++        ? results[0].approvalOk===false&&results[0].approvalReason==='producer_signature_signature_invalid'&&results[0].cliExitCode===0&&results[1].approvalOk===true&&results[2].cliExitCode===0
++        : results[0].approvalOk===true&&results[0].cliExitCode===0&&results[1].approvalOk===true&&results[2].approvalOk===false&&results[2].cliExitCode===1;
++      if(!expectationSatisfied)process.exitCode=1;
++    }
++    console.log(JSON.stringify({source,expected:expected||null,expectationSatisfied,results},null,2));
++  })().catch(()=>{console.error('Offline approval probe failed safely.');process.exitCode=1;});
++}

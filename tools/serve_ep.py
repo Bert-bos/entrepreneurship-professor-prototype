@@ -30,7 +30,9 @@ class AccountsStore:
         result["checkedAt"] = datetime.now(timezone.utc).isoformat()
         platforms = {account.get("platform") for account in result["accounts"]}
         result["missingPlatforms"] = [name for name in EXPECTED_PLATFORMS if name not in platforms]
-        result["capabilities"] = {"accountRead": "verified", "analytics": "not_verified", "publishing": "not_verified"}
+        # Account inventory establishes only account-read capability. Analytics
+        # availability is reported by the separately checked statistics endpoint.
+        result["capabilities"] = {"accountRead": "verified"}
         return result
 
     def get_snapshot(self):

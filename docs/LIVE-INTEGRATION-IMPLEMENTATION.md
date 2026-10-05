@@ -28,6 +28,14 @@ Account and statistics stores share results for up to 60 seconds, serialize conc
 
 The service validates Host, Origin, and cross-site request metadata before processing requests. It rejects mutating local methods, absolute request targets, and static paths or symlinks escaping `dist`. Upstream clients preserve proxy routing and TLS verification, reject redirects, limit response sizes, and return authored diagnostics instead of raw credential-bearing exceptions. Credentials remain server-side.
 
+Review finding R5 is fixed: the inventory response declares only
+`capabilities.accountRead="verified"`. Analytics availability belongs to the
+independently checked statistics endpoint; the account response no longer
+hard-codes an unrelated `analytics="not_verified"` next to successful statistics.
+The earlier JSON snapshot is retained as historical evidence; the corrected
+[R5 live readback](evidence/2026-10-05-r5-live-readback.json) records the new
+contract and continued HTTP-200 account/statistics access.
+
 ## Observed account access and analytics boundary
 
 The authenticated account lookup succeeded with HTTP 200 and returned Instagram, LinkedIn, TikTok, and YouTube. Facebook was not returned. The original account-read job, `EP-GHL-ACCESS-20261004-01`, is closed according to the user-supplied Claude close-out. Its observations and exceptions remain in `docs/EP-GHL-ACCESS-20261004-01-HANDOFF.md`.
@@ -79,6 +87,10 @@ revision with the pinned reference: runtime code, routes, auth, engine, and sche
 are identical; only four documentation files differ. All twelve BOS client tests,
 including the actual-server local roundtrip, passed at **both** revisions with
 no skips. No client or server deployment change is needed for that revision gap.
+Those tests start from a test-only approved assignment; they do not establish
+the hosted execution-approval path. Claude's subsequent R6 finding exposed that
+omitted boundary. The compatibility report now records the full producer →
+`ROUTED` → signed approval → `APPROVED_FOR_EXECUTION` → claim/working gate.
 See [the compatibility evidence](BOS-LIVE-REVISION-COMPATIBILITY.md).
 
 ## Validation and completion
@@ -108,5 +120,10 @@ not a substitute for a current provider check.
 
 `docs/CC-INTEGRATION-COMPLETION.md` contains the updated bounded completion packet.
 Analytics read access is verified. A hosted direct return still requires the
-secure BOS binding, publication, and a real current assignment from the existing
-coordinator; none is fabricated by the client.
+secure BOS binding, publication, and a real approved current assignment from the
+existing coordinator. Claude reports registration of
+`EP-LIVE-SOCIAL-BOS-20261005-01` in row 58, but no hosted contract or usable
+approval path yet. The actual CLI approval path has a reproduced timestamp
+signature defect and unresolved Render credential/storage integration; see
+[the approval investigation](BOS-APPROVAL-ACTIVATION.md). None of these states or
+identifiers is fabricated by the EP client.

@@ -1,0 +1,149 @@
+{
+  "observedAt": "2026-10-05T17:50:27.754577+00:00",
+  "jobId": "EP-LIVE-SOCIAL-BOS-20261005-01",
+  "source": "Codex authenticated same-origin adapter after R5 fix",
+  "accounts": {
+    "locationId": "2cCtht46QwERbvs3uITM",
+    "accountCount": 4,
+    "accounts": [
+      {
+        "id": "6ac32f51b9b1fffc8877c2e7_2cCtht46QwERbvs3uITM_17841430070835087",
+        "profileId": "6ac32f597fc8e09f7c81bcce",
+        "name": "entrepreneurshipprofessor",
+        "platform": "instagram",
+        "type": "profile",
+        "expire": "2026-12-04T04:57:09.136Z",
+        "isExpired": false,
+        "expirationTimestampPast": false,
+        "expirationDiscrepancy": false
+      },
+      {
+        "id": "6abf8db31561f5f050679baa_2cCtht46QwERbvs3uITM_M2EZQl_SqN_profile",
+        "profileId": "6abf8dbf346a77b91e294f7b",
+        "name": "Bert Seither, DBA",
+        "platform": "linkedin",
+        "type": "profile",
+        "expire": "2026-12-01T10:50:46.737Z",
+        "isExpired": false,
+        "expirationTimestampPast": false,
+        "expirationDiscrepancy": false
+      },
+      {
+        "id": "6abf8e869b50a04808d828b6_2cCtht46QwERbvs3uITM_0005byRAlEHOHPXg4Ji7NdTPG8wBAxdO73_business",
+        "profileId": "6abf8e8ccd5b03630ee2d6d8",
+        "name": "entrepreneurshipprof",
+        "platform": "tiktok",
+        "type": "business",
+        "expire": "2027-10-02T10:54:18.235Z",
+        "isExpired": false,
+        "expirationTimestampPast": false,
+        "expirationDiscrepancy": false
+      },
+      {
+        "id": "6abf8e45b9b1fffc8846efba_2cCtht46QwERbvs3uITM_UCfpxznhUUBSHxjT-ekSXQrQ_profile",
+        "profileId": "6abf8e4cb9b1fffc8846f248",
+        "name": "Dr. Bert Seither",
+        "platform": "youtube",
+        "type": "profile",
+        "expire": "2026-10-05T09:19:03.406Z",
+        "isExpired": false,
+        "expirationTimestampPast": true,
+        "expirationDiscrepancy": true
+      }
+    ],
+    "httpStatus": 200,
+    "source": "gohighlevel",
+    "checkedAt": "2026-10-05T17:50:28.022276+00:00",
+    "missingPlatforms": [
+      "facebook"
+    ],
+    "capabilities": {
+      "accountRead": "verified"
+    },
+    "cache": {
+      "fromCache": false,
+      "ttlSeconds": 60
+    }
+  },
+  "statistics": {
+    "locationId": "2cCtht46QwERbvs3uITM",
+    "status": "available",
+    "requiredScope": "socialplanner/statistics.readonly",
+    "httpStatus": 200,
+    "period": {
+      "kind": "lastSevenCompleteDays",
+      "excludeToday": true,
+      "comparison": "precedingSevenDays"
+    },
+    "totals": {
+      "posts": 0,
+      "likes": 0,
+      "followers": 3,
+      "impressions": 41,
+      "comments": 0
+    },
+    "platforms": [
+      {
+        "platform": "instagram",
+        "status": "available",
+        "connectedAccountCount": 1,
+        "eligibleAccountCount": 1,
+        "metrics": {
+          "posts": 0,
+          "impressions": 41,
+          "reach": 6,
+          "likes": 0,
+          "comments": 0,
+          "shares": 0,
+          "followers": 3
+        }
+      },
+      {
+        "platform": "youtube",
+        "status": "unavailable",
+        "connectedAccountCount": 1,
+        "eligibleAccountCount": 1,
+        "metrics": {},
+        "unavailableReason": "NO_METRICS_RETURNED",
+        "message": "GoHighLevel did not return supported count metrics for this selection."
+      },
+      {
+        "platform": "linkedin",
+        "status": "unavailable",
+        "connectedAccountCount": 1,
+        "eligibleAccountCount": 0,
+        "metrics": {},
+        "unavailableReason": "LINKEDIN_PAGE_REQUIRED",
+        "message": "GoHighLevel aggregated analytics supports LinkedIn Pages, not personal profiles."
+      },
+      {
+        "platform": "tiktok",
+        "status": "available",
+        "connectedAccountCount": 1,
+        "eligibleAccountCount": 1,
+        "metrics": {
+          "posts": 0,
+          "impressions": 0,
+          "reach": 0,
+          "likes": 0,
+          "comments": 0,
+          "shares": 0,
+          "followers": 0
+        }
+      }
+    ],
+    "excludedAccounts": [
+      {
+        "platform": "linkedin",
+        "reason": "LINKEDIN_PAGE_REQUIRED",
+        "message": "GoHighLevel aggregated analytics supports LinkedIn Pages, not personal profiles."
+      }
+    ],
+    "source": "gohighlevel",
+    "checkedAt": "2026-10-05T17:50:28.416431+00:00",
+    "cache": {
+      "fromCache": false,
+      "ttlSeconds": 60
+    }
+  }
+}

@@ -27,6 +27,13 @@ names the required analytics scope as well as credential validity.
 Sanitized current evidence is saved in
 [the authenticated readback](evidence/2026-10-05-ghl-live-readback.json).
 
+Following independent review R5, the account response now declares only its own
+verified account-read capability. It makes no analytics/publishing declaration;
+statistics availability is checked separately. Both endpoints and the Audience
+page remained working after the fix. The
+[corrected live readback](evidence/2026-10-05-r5-live-readback.json) supersedes
+that capability field in the earlier historical snapshot.
+
 The existing access job stays closed. Current implementation and activation
 evidence is in [LIVE-INTEGRATION-IMPLEMENTATION.md](LIVE-INTEGRATION-IMPLEMENTATION.md).
 The [CC completion packet](CC-INTEGRATION-COMPLETION.md) specifies the secure

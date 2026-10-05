@@ -80,3 +80,23 @@ The account-access job `EP-GHL-ACCESS-20261004-01` remains closed. New implement
 work returns through its own existing BOS assignment. See
 [CC completion instructions](CC-INTEGRATION-COMPLETION.md) for the secure
 activation and end-to-end verification packet.
+
+## Canonical registration and execution approval
+
+Claude reports registering `EP-LIVE-SOCIAL-BOS-20261005-01` in AI JOB LOG row 58
+and preparing, but not ingesting, its Job Envelope v1. Registration is not
+runtime execution approval. Producer-role HTTP ingestion reaches `ROUTED`;
+`approveForExecution` must verify a trusted Ed25519 signature, fresh Drive
+revision/body, and a fresh Command Center row exactly `APPROVED_FOR_EXECUTION`
+before worker claim and working can occur. The existing dashboard has no
+approval HTTP route. A Google operator session or `BOS_WORKER_KEY` cannot supply
+that authority.
+
+The actual CLI approval path has a reproduced real-clock signature mismatch
+and unverified canonical Render credential/storage integration. The bounded
+[approval investigation and proposal](BOS-APPROVAL-ACTIVATION.md) preserves the
+existing gate and distinguishes code repair from operational activation.
+The earlier return tests deliberately started from a synthetic test-approved
+assignment; they proved return compatibility, not hosted approval. Future
+workers must not repeat that test helper against real state or assume an
+identically named directory on another machine is Render's shared store.

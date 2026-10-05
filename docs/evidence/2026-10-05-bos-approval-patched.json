@@ -1,0 +1,37 @@
+{
+  "source": "/tmp/ep-bos-approval-timestamp-proposal",
+  "expected": "patched",
+  "expectationSatisfied": true,
+  "results": [
+    {
+      "scenario": "advancing-real-clock",
+      "cliExitCode": 0,
+      "approvalOk": true,
+      "approvalReason": null,
+      "persistedStatus": "APPROVED_FOR_EXECUTION",
+      "canonicalTemporaryDataDir": true,
+      "realNetworkRequests": 0,
+      "realCredentialsUsed": 0
+    },
+    {
+      "scenario": "fixed-test-clock",
+      "cliExitCode": 0,
+      "approvalOk": true,
+      "approvalReason": null,
+      "persistedStatus": "APPROVED_FOR_EXECUTION",
+      "canonicalTemporaryDataDir": true,
+      "realNetworkRequests": 0,
+      "realCredentialsUsed": 0
+    },
+    {
+      "scenario": "fresh-command-center-rejection",
+      "cliExitCode": 1,
+      "approvalOk": false,
+      "approvalReason": "command_center_execution_state_not_approved_for_execution",
+      "persistedStatus": "ROUTED",
+      "canonicalTemporaryDataDir": true,
+      "realNetworkRequests": 0,
+      "realCredentialsUsed": 0
+    }
+  ]
+}

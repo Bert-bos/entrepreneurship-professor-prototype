@@ -29,16 +29,25 @@ roundtrip, passed at each revision; no deployment update is required. Evidence:
 [current authenticated readback](evidence/2026-10-05-ghl-live-readback.json) and
 [BOS compatibility report](BOS-LIVE-REVISION-COMPATIBILITY.md).
 
-Claude reports zero current live tasks/handoffs. The existing coordinator needs
-to register and dispatch this authorized implementation work through its normal
-canonical job process. There is no assignment for the worker to claim yet;
-waiting for identifiers from a nonexistent assignment will not establish one.
-The prepared Codex secret field is also still unfilled. These are the concrete
-activation prerequisites; analytics and revision compatibility are verified.
+Claude subsequently registered canonical job `EP-LIVE-SOCIAL-BOS-20261005-01`
+in AI JOB LOG row 58 and prepared a schema-valid envelope pinned to `e145b95`.
+The hosted contract is not ingested, approved, or assigned. Do not create a
+duplicate registration. The recorded `drive_revision` is only a snapshot and
+must be refreshed after any canonical-document edit.
+
+Claude's independent static review of `e145b95` is PASS WITH FINDINGS. Codex
+fixed R5 by dropping the account endpoint's unrelated analytics/publishing
+capability fields and verified the live response with all 58 tests passing.
+R6 is corrected in the compatibility report: producer ingestion only reaches
+`ROUTED`; a fresh trusted signed execution approval is mandatory before claim.
+The existing CLI additionally has a reproduced timestamp-signature defect.
+The [approval activation investigation](BOS-APPROVAL-ACTIVATION.md) contains the
+reviewable repair and the operational constraints. The prepared worker secret
+field remains unfilled. Binding that key alone cannot supply execution approval.
 
 ## One end-to-end execution
 
-1. **Have the existing BOS coordinator register and dispatch the implementation assignment.** Reuse a matching current canonical job if one exists. If the reported empty runtime is still current, the coordinator must create/dispatch the job through its established authorized intake, rather than wait for missing identifiers or ask Bert to invent them. Use the actual generated task ID, canonical job ID, exact target branch/revision, current attempt ID, permitted files/operations, acceptance criteria, reviewer, evidence destination, and zero-spend cost policy. The result-return lane requires a `WORKING` assignment claimed through the existing worker lane as `bos-worker`. Do not create another queue or reopen `EP-GHL-ACCESS-20261004-01`: that account-read access job is already closed.
+1. **Complete BOS approval activation for the existing registered job.** Preserve job `EP-LIVE-SOCIAL-BOS-20261005-01`, row 58, and the closed account-read job. Have the existing BOS technical/owner lane review the approval investigation and its bounded repair proposal. Establish an authorized approval path that reaches the same canonical runtime store, verifies the trusted producer signature, freshly reads the matching Drive revision/body and approved Command Center row, and maintains reconciliation. The current Google session is operator-only; it cannot perform producer-role ingestion or signed approval. The existing Mac CLI does not remotely approve Render state, and a worker credential cannot replace the producer signing/approval gate. Do not hand-edit approval state, use test-only approval helpers, copy a producer private key onto a verifier, or invent an approval HTTP route. Any BOS runtime implementation/deployment requires its own authorized technical review and release boundary. Once that path is actually usable, refresh the envelope's repository revision and Drive binding, ingest using the existing producer role, verify `ROUTED` then genuine `APPROVED_FOR_EXECUTION`, and claim/mark working through the actual worker lane. Preserve actual generated task/current-attempt IDs for the return.
 
 2. **Independently review and apply the prepared branch.** Review `tools/check_ghl_accounts.py`, `tools/check_ghl_statistics.py`, `tools/serve_ep.py`, the Audience integration assets, `tools/bos_handoff.py`, the pinned Worker Result schema, and their tests. An authorized technical lane applies repository changes; the implementer does not approve its own release. Preserve existing files and credentials, and record the exact revision and any approved change in scope. The loopback development service does not provide a production deployment plan.
 
@@ -83,6 +92,9 @@ Authenticated account read returned four accounts, and current statistics read
 returned HTTP 200 with the exact metrics listed above. The initial HTTP 401 is
 historical evidence preceding the scope fix. The BOS return client passed actual
 local-server tests at both revisions but has not submitted a hosted Worker Result
-from this session.
+from this session. The later review's R5 correction is also live-verified; R6's
+missing execution-approval gate is documented. Local return compatibility
+fixtures used test-only approval to establish their starting assignment and
+must not be treated as proof of a real approval pipeline.
 
-Completion requires the reviewed implementation to be available to its authorized workers, applied cloud settings and secure bindings, accurate capability results, a current BOS assignment, a directly verified Worker Result receipt, and independent QA recorded in that assignment. Current outside prerequisites are the existing `BOS_WORKER_KEY`, publication/application of the BOS network/configuration requirements, and creation/dispatch of the canonical implementation assignment through the existing coordinator. Analytics access and compatibility with the reported deployed revision are verified. These requirements do not require rebuilding the established integration or asking Bert to carry routine messages.
+Completion requires the reviewed implementation to be available to its authorized workers, applied cloud settings and secure bindings, accurate capability results, a genuinely approved current BOS assignment, a directly verified Worker Result receipt, and independent QA recorded in that assignment. Current outside prerequisites are repair/activation of the producer execution-approval path on canonical storage, the existing `BOS_WORKER_KEY`, and publication/application of the BOS network/configuration requirements. The canonical implementation job is already registered; analytics access and return compatibility are verified. Coordinate BOS activation work through its existing authorized technical lane, not another EP registration or dispatcher. These requirements do not require rebuilding the established GHL integration or asking Bert to carry routine messages.
