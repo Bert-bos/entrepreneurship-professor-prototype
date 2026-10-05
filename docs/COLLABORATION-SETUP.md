@@ -69,6 +69,13 @@ running environment has no `BOS_WORKER_KEY` or supplied current assignment.
 The BOS network destination and secure-key requirement are being saved in the
 cloud configuration draft; saving is separate from publication.
 
+The reported deployed revision `769cc8477d44be7abfab2f44157ddbb997c9e091` was
+subsequently compared and tested independently. It has identical runtime code,
+auth, routes, engine, and Worker Result schema to the pinned reference; all twelve
+client tests also passed against its actual server in a temporary local fixture.
+See [the compatibility report](BOS-LIVE-REVISION-COMPATIBILITY.md). The nine-commit
+revision gap is documentation-only and requires no deployment to use this client.
+
 The account-access job `EP-GHL-ACCESS-20261004-01` remains closed. New implementation
 work returns through its own existing BOS assignment. See
 [CC completion instructions](CC-INTEGRATION-COMPLETION.md) for the secure

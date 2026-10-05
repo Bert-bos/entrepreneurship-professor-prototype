@@ -38,7 +38,7 @@ REASONS = {
     "ACCOUNT_EXPIRED": "GoHighLevel reports that the account token has expired.",
     "NO_METRICS_RETURNED": "GoHighLevel did not return supported count metrics for this selection.",
     "STATISTICS_ACCESS_DENIED": "GoHighLevel denied analytics access; this operation requires socialplanner/statistics.readonly.",
-    "STATISTICS_CREDENTIAL_REJECTED": "GoHighLevel rejected the analytics credential.",
+    "STATISTICS_CREDENTIAL_REJECTED": "GoHighLevel could not authorize analytics; verify the credential and socialplanner/statistics.readonly scope.",
 }
 
 

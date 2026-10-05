@@ -191,6 +191,7 @@ class StatisticsTests(unittest.TestCase):
                 self.assertEqual(result["status"], "unavailable")
                 self.assertEqual(result["httpStatus"], status)
                 self.assertEqual(result["requiredScope"], statistics.REQUIRED_SCOPE)
+                self.assertIn(statistics.REQUIRED_SCOPE, result["error"]["message"])
                 self.assertNotIn(SECRET, json.dumps(result))
                 self.assertEqual(result["totals"], {})
 

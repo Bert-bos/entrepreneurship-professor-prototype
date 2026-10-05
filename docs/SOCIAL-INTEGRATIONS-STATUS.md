@@ -10,15 +10,22 @@ credentials are excluded from API responses and page markup. Existing metrics
 and recommendations remain explicitly labeled preview data.
 
 `tools/check_ghl_statistics.py` implements the documented read-only V3 statistics
-request using actual account `profileId` values. The live probe reached GHL and
-returned **HTTP 401**; the same helper's account inventory succeeded. No analytics
-counts were returned or substituted. The native scope readback establishes only
-`socialplanner/account.readonly`; analytics requires
-`socialplanner/statistics.readonly`. The precise cause of the 401 has not been
-independently confirmed. LinkedIn's personal profile is excluded from GHL's
-aggregated analytics; Instagram, YouTube, and TikTok Business supplied eligible
-profile selectors. The development server exposes this structured unavailable
-result at `GET /api/social/statistics` with a 60-second cache.
+request using actual account `profileId` values. After the approved scope update,
+the existing EP token now returns **HTTP 200** for both accounts and statistics.
+Claude reports exactly two native scopes: `socialplanner/account.readonly` and
+`socialplanner/statistics.readonly`, with no token rotation. Codex independently
+verified the successful requests and live Audience display.
+
+Instagram returned 41 impressions, reach 6, and 3 followers; TikTok returned
+actual zeros. YouTube returned no metrics and remains unavailable. LinkedIn's
+personal profile is excluded because GHL aggregate analytics requires a Page.
+No missing metric was filled with zero. The development server exposes the
+projection at `GET /api/social/statistics` with a 60-second cache. The original
+401 and account-only scope are historical findings. The 401 diagnostic now
+names the required analytics scope as well as credential validity.
+
+Sanitized current evidence is saved in
+[the authenticated readback](evidence/2026-10-05-ghl-live-readback.json).
 
 The existing access job stays closed. Current implementation and activation
 evidence is in [LIVE-INTEGRATION-IMPLEMENTATION.md](LIVE-INTEGRATION-IMPLEMENTATION.md).

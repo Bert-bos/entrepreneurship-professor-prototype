@@ -72,3 +72,18 @@ Report dated October 5, 2026 at 11:12 AM EDT (15:12 UTC); follow-up API read was
 | E5 — Direct worker evidence delivery | Codex's result reached the canonical record through Bert; direct automated handoff remains unproven |
 
 These exceptions do not invalidate the successful account-read request or reopen the completed access job. They do not establish broader integration capabilities or automatic cross-lane coordination.
+
+## Subsequent implementation observation — account job remains closed
+
+On October 5, following Bert's approval, Claude reports updating the same
+integration to exactly the account-read and statistics-read scopes, with no
+rotation, and releasing `EP-STATS-SCOPE-LEASE-01`. Codex independently reran both
+helpers using the existing EP token: accounts and statistics returned HTTP 200.
+Instagram returned 41 impressions, reach 6, and 3 followers; TikTok returned
+actual zeros. YouTube supplied no metrics; LinkedIn personal-profile aggregate
+analytics is unsupported. This is subsequent product implementation evidence,
+not a reopened access job. E4's historical analytics limitation is superseded by
+the verified read; publishing remains untested and unauthorized by this packet.
+The [implementation report](LIVE-INTEGRATION-IMPLEMENTATION.md) and
+[sanitized snapshot](evidence/2026-10-05-ghl-live-readback.json) retain the current
+observations. Direct hosted BOS delivery has not occurred.

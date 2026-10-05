@@ -13,13 +13,36 @@ The cloud configuration draft is saved as
 readback confirmed the preserved GHL binding and the new unfilled worker-key
 requirement. Saving has not published it.
 
+## Verified follow-up to Claude's October 5 coordinator return
+
+The existing EP token now returns **HTTP 200** for both account inventory and
+statistics after the approved scope addition. Instagram returned 41 impressions,
+reach 6, and 3 followers; TikTok returned actual zeros. YouTube metrics remain
+unavailable and LinkedIn personal-profile aggregate analytics is unsupported.
+The live Audience display, refresh, six pages, drawer, keyboard operation, and
+mobile layout passed. All 58 unit tests and JavaScript syntax checks passed.
+Finding R1 is fixed: the 401 message now names the required statistics-read scope.
+
+The reported deployed BOS revision `769cc84` has identical runtime code and schema
+to the pinned reference. All twelve client tests, including the actual-server
+roundtrip, passed at each revision; no deployment update is required. Evidence:
+[current authenticated readback](evidence/2026-10-05-ghl-live-readback.json) and
+[BOS compatibility report](BOS-LIVE-REVISION-COMPATIBILITY.md).
+
+Claude reports zero current live tasks/handoffs. The existing coordinator needs
+to register and dispatch this authorized implementation work through its normal
+canonical job process. There is no assignment for the worker to claim yet;
+waiting for identifiers from a nonexistent assignment will not establish one.
+The prepared Codex secret field is also still unfilled. These are the concrete
+activation prerequisites; analytics and revision compatibility are verified.
+
 ## One end-to-end execution
 
-1. **Obtain the current product implementation assignment from BOS.** Use its existing task ID, job ID, exact target branch/revision, current attempt ID, permitted files/operations, acceptance criteria, reviewer, evidence destination, and cost policy. The result-return lane requires a `WORKING` assignment claimed by `bos-worker`. Do not invent identifiers, create another queue, or reopen `EP-GHL-ACCESS-20261004-01`: that account-read access job is already closed.
+1. **Have the existing BOS coordinator register and dispatch the implementation assignment.** Reuse a matching current canonical job if one exists. If the reported empty runtime is still current, the coordinator must create/dispatch the job through its established authorized intake, rather than wait for missing identifiers or ask Bert to invent them. Use the actual generated task ID, canonical job ID, exact target branch/revision, current attempt ID, permitted files/operations, acceptance criteria, reviewer, evidence destination, and zero-spend cost policy. The result-return lane requires a `WORKING` assignment claimed through the existing worker lane as `bos-worker`. Do not create another queue or reopen `EP-GHL-ACCESS-20261004-01`: that account-read access job is already closed.
 
 2. **Independently review and apply the prepared branch.** Review `tools/check_ghl_accounts.py`, `tools/check_ghl_statistics.py`, `tools/serve_ep.py`, the Audience integration assets, `tools/bos_handoff.py`, the pinned Worker Result schema, and their tests. An authorized technical lane applies repository changes; the implementer does not approve its own release. Preserve existing files and credentials, and record the exact revision and any approved change in scope. The loopback development service does not provide a production deployment plan.
 
-3. **Reuse the existing GHL integration and supported secure binding.** The established integration is `Entrepreneurship Professor — BOS Access`, ID `6ac3148cde99fd539e34a394`, for location `2cCtht46QwERbvs3uITM`. Preserve `socialplanner/account.readonly`; the documented analytics read additionally requires `socialplanner/statistics.readonly`. Inspect the existing grant and the authenticated statistics response before diagnosing the current HTTP 401. Make any authorized scope adjustment under the coordinator's existing lease/governance process. Refresh or hand off a token only if the supported integration requires it, using the existing secure `GHL_ACCESS_TOKEN` environment binding restricted to `services.leadconnectorhq.com`. Do not put values in chat, documents, commits, logs, or browser code. This packet requires no `socialplanner/post.write`, post creation, or publishing operation.
+3. **Preserve the now-verified GHL access.** The existing integration is `Entrepreneurship Professor — BOS Access`, ID `6ac3148cde99fd539e34a394`, for location `2cCtht46QwERbvs3uITM`. Claude reports exactly `socialplanner/account.readonly` and `socialplanner/statistics.readonly` after the approved update; the existing EP token now succeeds for both reads. Preserve those two scopes and the secure `GHL_ACCESS_TOKEN` binding restricted to `services.leadconnectorhq.com`. The old account-only integration description is stale metadata, not the actual scope grant. No token replacement is needed on the successful current evidence. Credential values never belong in chat, documents, commits, logs, or browser code. This packet requires no `socialplanner/post.write`, post creation, or publishing operation.
 
 4. **Supply the existing scoped BOS worker access and publish the prepared cloud configuration.** Bind the established return-lane credential as `BOS_WORKER_KEY`, restricted to `bos-workforce-orchestrator.onrender.com`, through the supported secure environment flow. Do not generate another dispatcher, broaden worker authority, reuse the unidentified project key, or copy a worker key into source. The BOS destination, `BOS_BASE_URL` suggestion, startup instructions, and worker-key requirement are saved in the draft, which reports `requires_publish: true`; publication/application is not yet verified and no worker-key value has been supplied. Publish through the supported environment settings, then verify propagation in the selected runtime. Existing GHL bindings and network destinations must remain intact. A saved draft is not publication, and publication does not establish authenticated API success.
 
@@ -55,6 +78,11 @@ requirement. Saving has not published it.
 
 ## Starting evidence and acceptance
 
-The local account workflow is implemented and browser-verified. Authenticated account read returned four accounts. The statistics probe returned upstream HTTP 401, while account read remained successful. Its cause is unconfirmed; live analytics have not succeeded. The BOS return client has local tests but has not submitted a production Worker Result from this session.
+The local account/analytics workflow is implemented and browser-verified.
+Authenticated account read returned four accounts, and current statistics read
+returned HTTP 200 with the exact metrics listed above. The initial HTTP 401 is
+historical evidence preceding the scope fix. The BOS return client passed actual
+local-server tests at both revisions but has not submitted a hosted Worker Result
+from this session.
 
-Completion requires the reviewed implementation to be available to its authorized workers, applied cloud settings and secure bindings, accurate capability results, a current BOS assignment, a directly verified Worker Result receipt, and independent QA recorded in that assignment. Current outside prerequisites are the existing `BOS_WORKER_KEY`, application of the BOS network/configuration requirements, and the canonical current task/job/attempt. Analytics additionally needs the documented scope and a successful authorized read. These requirements are concrete; they do not require rebuilding the established integration or asking Bert to carry routine messages.
+Completion requires the reviewed implementation to be available to its authorized workers, applied cloud settings and secure bindings, accurate capability results, a current BOS assignment, a directly verified Worker Result receipt, and independent QA recorded in that assignment. Current outside prerequisites are the existing `BOS_WORKER_KEY`, publication/application of the BOS network/configuration requirements, and creation/dispatch of the canonical implementation assignment through the existing coordinator. Analytics access and compatibility with the reported deployed revision are verified. These requirements do not require rebuilding the established integration or asking Bert to carry routine messages.
