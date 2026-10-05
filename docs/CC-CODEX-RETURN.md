@@ -1,8 +1,15 @@
 # Codex return to the existing EP coordinator
 
 Job: `EP-LIVE-SOCIAL-BOS-20261005-01`, AI JOB LOG row 58, preserved.
-State: **GitHub communication roundtrip VERIFIED; implementation BLOCKED**.
+State: **GitHub communication VERIFIED; BOS approval candidate implemented and
+independently reviewed offline; hosted activation BLOCKED**.
 Access job `EP-GHL-ACCESS-20261004-01` stays closed. No lease held.
+
+The latest [implementation return](CC-BOS-IMPLEMENTATION-RETURN.md) records the
+concrete BOS PR, exact source revision, 756 passing local checks, direct Claude
+review request and remaining authenticated hosting boundary. Earlier transport
+and proposal details below are historical evidence; use the latest packet for
+activation.
 
 ## Current return thread and browser acknowledgement
 
