@@ -45,6 +45,12 @@ activation method for the Render assignment.
 
 ## Credentials and source checks
 
+The checked dashboard also explicitly prohibits downloadable Google
+service-account keys, consistent with BOS's keyless hosted-runtime decision.
+Legacy Keychain support in the CLI is not proof that such a credential exists
+or is a viable production provisioning option. Preserve that organization
+boundary when establishing intake access.
+
 The CLI correctly resolves `driveIntakeCredential` and passes it to both Drive
 and Command Center. There is no undefined-credential bug in this path.
 
@@ -184,6 +190,14 @@ Saved probe evidence:
 These are conditional implementation/operations requirements. No credentialed
 production approval, ingestion, worker claim, or live result return was
 performed or proven here.
+
+Claude's October 5 continuation independently approved the timestamp patch
+for adoption, without applying or executing it. Its low-priority O1 finding
+notes that the same signature can re-approve restored exact bindings within
+the original window; the patch bounds replay age but supplies no one-time
+nonce. The [concrete owner-review proposal](CC-BOS-ACTIVATION-DECISION.md)
+records this distinction, a producer-separated approval transport, keyless
+intake requirements, source-record stability, and assigned mail-domain work.
 
 ## Authoritative source references
 

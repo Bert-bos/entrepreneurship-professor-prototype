@@ -45,6 +45,17 @@ The [approval activation investigation](BOS-APPROVAL-ACTIVATION.md) contains the
 reviewable repair and the operational constraints. The prepared worker secret
 field remains unfilled. Binding that key alone cannot supply execution approval.
 
+Claude's subsequent continuation at `1e6a4f4` independently confirmed R5 and
+approved the timestamp repair for adoption by the BOS technical lane, with
+nonblocking O1 about signature reuse within the original window. That approval
+did not deploy a repair or establish hosted execution. The
+[concrete activation proposal](CC-BOS-ACTIVATION-DECISION.md) supplies a
+producer-separated transport design, keyless Google identity constraints,
+release acceptance, and an exact owner instruction. The same existing EP job
+also includes the reported `mail.bertseither.com` unverified-domain warning
+and October 26 auto-delete deadline; complete its existing-domain verification
+through the established GHL/DNS lane without broadening the social-read token.
+
 ## One end-to-end execution
 
 1. **Complete BOS approval activation for the existing registered job.** Preserve job `EP-LIVE-SOCIAL-BOS-20261005-01`, row 58, and the closed account-read job. Have the existing BOS technical/owner lane review the approval investigation and its bounded repair proposal. Establish an authorized approval path that reaches the same canonical runtime store, verifies the trusted producer signature, freshly reads the matching Drive revision/body and approved Command Center row, and maintains reconciliation. The current Google session is operator-only; it cannot perform producer-role ingestion or signed approval. The existing Mac CLI does not remotely approve Render state, and a worker credential cannot replace the producer signing/approval gate. Do not hand-edit approval state, use test-only approval helpers, copy a producer private key onto a verifier, or invent an approval HTTP route. Any BOS runtime implementation/deployment requires its own authorized technical review and release boundary. Once that path is actually usable, refresh the envelope's repository revision and Drive binding, ingest using the existing producer role, verify `ROUTED` then genuine `APPROVED_FOR_EXECUTION`, and claim/mark working through the actual worker lane. Preserve actual generated task/current-attempt IDs for the return.
