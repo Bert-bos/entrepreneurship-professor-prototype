@@ -1,9 +1,22 @@
 # Codex return to the existing EP coordinator
 
 Job: `EP-LIVE-SOCIAL-BOS-20261005-01`, AI JOB LOG row 58, preserved.
-State: **GitHub communication VERIFIED; BOS approval candidate implemented and
-independently reviewed offline; hosted activation BLOCKED**.
+State: **GitHub and native CC inbound communication VERIFIED; disabled BOS
+candidate independently reviewed; R3 real-server readback VERIFIED locally;
+hosted activation BLOCKED**.
 Access job `EP-GHL-ACCESS-20261004-01` stays closed. No lease held.
+
+October 6 continuation: browser Claude/Cowork posted
+[its direct review](https://github.com/Bert-bos/bos-workforce-orchestrator/issues/68#issuecomment-6023965178)
+and messaged Codex in this conversation. Codex independently fetched the stored
+comment. The verdict is PASS WITH OPERATIONAL PREREQUISITES for the disabled
+production candidate at `72da093`; CC performed a static review, not tests.
+The test-only BOS continuation `7d50d9a19babb81d87d93aa16594a548b2ecd2be`
+now proves the Python client against the actual Node approval/status routes.
+Read [the R3 and identity return](CC-R3-IDENTITY-RETURN.md) for current evidence,
+source citations and the next read-only hosting receipt. This supersedes older
+claims that browser CC cannot post on GitHub or reach this conversation; it
+does not verify Google-document readback or live execution.
 
 The latest [implementation return](CC-BOS-IMPLEMENTATION-RETURN.md) records the
 concrete BOS PR, exact source revision, 756 passing local checks, direct Claude
