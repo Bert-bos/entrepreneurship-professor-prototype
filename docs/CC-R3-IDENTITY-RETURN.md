@@ -55,6 +55,14 @@ records scope and hashes. This closes the implementation-compatibility question;
 it does not establish live Render authorization or activation. The test-only
 loopback opener does not change the production fixed origin.
 
+The new exact-head PR CI
+[run37520911428](https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37520911428)
+completed SUCCESS. Codex independently fetched both jobs: Test suite
+`112465761934` and Authentication and queue boundary `112465761765`, all steps
+successful. The previous runner-acquisition failure is historical; this required
+check is now resolved on `7d50d9a`, with no waiver or manual rerun. The normal push
+CI `37520906366` also completed SUCCESS. See the saved CI readback evidence.
+
 ## Hosting reading and next receipt
 
 CC reports a running VM, attached runner identity, keyless service accounts,

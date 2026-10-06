@@ -1,0 +1,111 @@
+{
+  "runId": 37520911428,
+  "candidateRevision": "7d50d9a19babb81d87d93aa16594a548b2ecd2be",
+  "httpStatus": 200,
+  "jobs": [
+    {
+      "id": 112465761765,
+      "name": "Authentication and queue boundary",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37520911428/job/112465761765",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci --omit=dev",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node --test test/audit-integrity.test.js test/owned-directory-lock.test.js test/exclusive-create-cas.test.js test/operator-authorization.test.js test/runner-queue-reader.test.js test/http-read-purity.test.js test/capture-ingest.test.js test/dashboard-css-collision.test.js test/status-endpoints.test.js",
+          "conclusion": "success"
+        },
+        {
+          "name": "No executable sibling-repository dependency",
+          "conclusion": "success"
+        },
+        {
+          "name": "Blueprint keeps health and manual deploy intent",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 112465761934,
+      "name": "Test suite",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37520911428/job/112465761934",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci --omit=dev",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Remote producer approval boundary",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm audit --omit=dev --audit-level=high",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "jobId": "EP-LIVE-SOCIAL-BOS-20261005-01",
+  "verifiedByReadback": true,
+  "runUrl": "https://github.com/Bert-bos/bos-workforce-orchestrator/actions/runs/37520911428",
+  "productionCodeChanged": false,
+  "releaseApproved": false,
+  "deploymentPerformed": false
+}
